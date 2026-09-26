@@ -1,0 +1,44 @@
+{
+  "catalog": {
+    "integrity": "sha256-b84c4cdeee74d7a92edeb2854202e546c712fb76a6768c03799c32bc1be69840",
+    "package": "agentic-awesome-skills",
+    "version": "17.2.0"
+  },
+  "name": "aas-stack",
+  "profile": {
+    "constraints": [],
+    "frameworks": [],
+    "goals": [
+      "unit testing",
+      "code review"
+    ],
+    "languages": []
+  },
+  "schemaVersion": 2,
+  "skills": [
+    {
+      "id": "unit-testing-test-generate"
+    },
+    {
+      "id": "testing-patterns"
+    },
+    {
+      "id": "tdd-workflow"
+    },
+    {
+      "id": "requesting-code-review"
+    },
+    {
+      "id": "receiving-code-review"
+    },
+    {
+      "id": "review-and-simplify-changes"
+    }
+  ],
+  "targets": [
+    {
+      "host": "codex",
+      "scope": "project"
+    }
+  ]
+}

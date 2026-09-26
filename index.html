@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KAPIL JANGID // SUPER SAIYAN DEVELOPER</title>
+    <meta name="description" content="Dragon Ball-inspired personal portfolio of Kapil Jangid — Full Stack & AI Engineer." />
+    <meta name="theme-color" content="#FFF1CF" />
+    <script>
+      try {
+        document.documentElement.dataset.theme = localStorage.getItem('portfolio-theme') === 'super' ? 'super' : 'base';
+      } catch {
+        document.documentElement.dataset.theme = 'base';
+      }
+    </script>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="KAPIL JANGID // SUPER SAIYAN DEVELOPER" />
+    <meta property="og:description" content="Dragon Ball-inspired portfolio of Kapil Jangid — AI Engineer & Full Stack Developer." />
+    <meta property="og:type" content="website" />
+
+    <!-- Google Fonts: Bangers (Manga Action), Outfit (Body), JetBrains Mono (Code) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  </head>
+  <body class="font-sans antialiased min-h-screen">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

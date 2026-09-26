@@ -1,0 +1,4 @@
+[mcp_servers.aas]
+command = "/home/kapil31jangid/.nvm/versions/node/v24.18.0/bin/node"
+args = ["/home/kapil31jangid/.agents/runtimes/17.2.0/sha512-o-KjIvlLywuF_MNciD3sxCPVlR50F-zB-aSK6uZTfOijl-qihUdPkJTLMe3sa9vjlpMJhkdCv3ykN7mL4YoPTg/package/tools/bin/aas-mcp.js", "--cache-root", "/home/kapil31jangid/.agents"]
+enabled = true

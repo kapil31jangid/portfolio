@@ -1,0 +1,166 @@
+@import "tailwindcss";
+
+/* Fixed ink and accent swatches; semantic roles below switch forms. */
+:root {
+  --dbz-navy-deep: #10182F; --dbz-navy-dark: #0A1022;
+  --dbz-cream: #FFF1CF; --dbz-orange: #F47B20;
+  --dbz-yellow: #FFD447; --dbz-blue: #35B8FF;
+  --dbz-red: #E34835; --dbz-ink: #11172C;
+}
+:root, [data-theme="base"] {
+  color-scheme: light;
+  --t-bg-primary: #FFF1CF; --t-bg-secondary: #FFF8E8; --t-bg-panel: #FFFCF4;
+  --t-surface: #10182F; --t-surface-alt: #11172C;
+  --t-text-primary: #11172C; --t-text-secondary: #454655;
+  --t-accent-main: #F47B20; --t-accent-alt: #E34835;
+  --t-accent-bright: #FFD447; --t-accent-cool: #35B8FF;
+  /* Darker ink variants maintain contrast for small text on cream. */
+  --t-accent-ink: #99400C; --t-alt-ink: #AC3022; --t-cool-ink: #155A7D;
+  --t-heading: #11172C; --t-chapter-border: #11172C; --t-divider: #C5BDA9;
+  --t-tag-bg: #11172C; --t-tag-text: #FFF1CF;
+  --t-card-bg: #FFFCF4; --t-card-text: #11172C;
+  --t-halftone-dot: rgb(17 23 44 / 7%); --t-speed-line: rgb(244 123 32 / 7%);
+  --t-aura-blue: transparent; --t-aura-gold: transparent;
+  --t-navbar-bg: #FFF1CF; --t-navbar-text: #11172C; --t-navbar-active: #99400C;
+  --t-hero-bg: #FFF1CF; --t-hero-kapil: #FFF8E8; --t-hero-jangid: #F47B20;
+  --t-hero-role: #10182F; --t-hero-caption: #454655;
+  --t-panel-shadow: 6px 6px 0 #11172C;
+  --t-button-shadow: 4px 4px 0 #11172C;
+  --t-heading-shadow: 3px 3px 0 #11172C;
+  --t-character-filter: saturate(.75) contrast(1.03);
+  --t-character-shadow: 8px 8px 0 #11172C;
+  --t-energy-opacity: .12; --t-energy-duration: 7s; --t-energy-scale: 1.015;
+  --t-hover-lift: -2px; --t-mountain: #E34835; --t-mountain-back: #F47B20;
+}
+[data-theme="super"] {
+  color-scheme: dark;
+  --t-bg-primary: #0A1022; --t-bg-secondary: #10182F; --t-bg-panel: #141E35;
+  --t-surface: #0A1022; --t-surface-alt: #10182F;
+  --t-text-primary: #FFF4D8; --t-text-secondary: #C8CBCE;
+  --t-accent-main: #FFD447; --t-accent-alt: #FFE66A;
+  --t-accent-bright: #FFE66A; --t-accent-cool: #35B8FF;
+  --t-accent-ink: #FFD447; --t-alt-ink: #FFE66A; --t-cool-ink: #35B8FF;
+  --t-heading: #FFF4D8; --t-chapter-border: #9D8436; --t-divider: #4A5062;
+  --t-tag-bg: #FFD447; --t-tag-text: #11172C;
+  --t-card-bg: #10182F; --t-card-text: #FFF4D8;
+  --t-halftone-dot: rgb(255 212 71 / 7%); --t-speed-line: rgb(53 184 255 / 10%);
+  --t-aura-blue: rgb(53 184 255 / 8%); --t-aura-gold: rgb(255 212 71 / 8%);
+  --t-navbar-bg: #0A1022; --t-navbar-text: #FFF4D8; --t-navbar-active: #FFD447;
+  --t-hero-bg: #0A1022; --t-hero-kapil: #FFE66A; --t-hero-jangid: #FFD447;
+  --t-hero-role: #35B8FF; --t-hero-caption: #C8CBCE;
+  --t-panel-shadow: 6px 6px 0 #FFD447, 0 0 24px rgb(53 184 255 / 12%);
+  --t-button-shadow: 4px 4px 0 #997826, 0 0 14px rgb(255 212 71 / 16%);
+  --t-heading-shadow: 3px 3px 0 #11172C, 0 0 20px rgb(255 212 71 / 24%);
+  --t-character-filter: sepia(.55) saturate(1.65) contrast(1.12);
+  --t-character-shadow: 8px 8px 0 #FFD447, -4px -4px 0 #35B8FF, 0 0 28px rgb(255 212 71 / 22%);
+  --t-energy-opacity: .7; --t-energy-duration: 3.5s; --t-energy-scale: 1.04;
+  --t-hover-lift: -3px; --t-mountain: #35B8FF; --t-mountain-back: #FFD447;
+}
+body { margin: 0; background: var(--t-bg-primary); color: var(--t-text-primary); font-family: 'Outfit', sans-serif; }
+.portfolio { background: var(--t-bg-primary); color: var(--t-text-primary); }
+.font-manga { font-family: 'Bangers', Impact, sans-serif; }
+.font-body { font-family: 'Outfit', sans-serif; }
+.font-code { font-family: 'JetBrains Mono', monospace; }
+*, ::before, ::after { letter-spacing: 0 !important; }
+::selection { background: var(--t-accent-main); color: var(--dbz-ink); }
+:focus-visible { outline: 3px solid var(--t-cool-ink); outline-offset: 5px; }
+section[id] { scroll-margin-top: 100px; }
+section { transition: background-color .25s ease, color .25s ease; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button { cursor: pointer; }
+svg { flex-shrink: 0; }
+.section-day, .mode-manga-day { background-color: var(--t-bg-primary); color: var(--t-text-primary); }
+.section-night, .mode-energy-night { background-color: var(--t-bg-secondary); color: var(--t-text-primary); }
+.bg-halftone, .bg-halftone-cream { background-image: radial-gradient(var(--t-halftone-dot) .8px, transparent 1px); background-size: 12px 12px; }
+.bg-halftone-cream { background-color: var(--t-bg-primary); }
+.bg-speed-lines { background-image: repeating-conic-gradient(from 0deg at 80% 50%, var(--t-speed-line) 0deg 1deg, transparent 1deg 12deg); }
+.comic-card, .comic-card-cream, .comic-card-orange, .comic-card-yellow {
+  border: 3px solid var(--t-chapter-border); box-shadow: var(--t-panel-shadow);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.comic-card-cream { background: var(--t-card-bg); color: var(--t-card-text); }
+.comic-card-orange { background: var(--t-accent-main); color: var(--dbz-ink); }
+.comic-card-yellow { background: var(--t-accent-bright); color: var(--dbz-ink); }
+.comic-card:hover { transform: translateY(var(--t-hover-lift)); }
+.manga-stroke-navy { -webkit-text-stroke: 2px var(--dbz-ink); paint-order: stroke fill; text-shadow: var(--t-heading-shadow); }
+.manga-stroke-orange { -webkit-text-stroke: 2px var(--t-accent-main); text-shadow: 4px 4px 0 var(--t-accent-main); }
+.anime-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  padding: .75rem 1.5rem; min-height: 44px;
+  font-family: 'Bangers', Impact, sans-serif; font-size: 1.25rem;
+  text-transform: uppercase; border: 3px solid var(--dbz-ink); border-radius: 8px;
+  box-shadow: var(--t-button-shadow);
+  transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease;
+}
+.anime-btn:hover { transform: translateY(var(--t-hover-lift)); }
+.anime-btn-orange { background: var(--t-accent-main); color: var(--dbz-ink); }
+.anime-btn-cream { background: var(--t-card-bg); color: var(--t-card-text); border-color: var(--t-chapter-border); }
+.anime-btn-yellow { background: var(--t-accent-bright); color: var(--dbz-ink); }
+.anime-btn-blue { background: var(--dbz-blue); color: var(--dbz-ink); }
+.anime-btn svg { color: currentColor; }
+.power-toggle {
+  display: inline-flex; flex-direction: column; gap: 3px;
+  padding: 5px; width: 182px; min-height: 60px; flex-shrink: 0;
+  border: 2px solid var(--t-chapter-border); border-radius: 8px;
+  background: var(--t-navbar-bg); color: var(--t-navbar-text);
+  box-shadow: 3px 3px 0 var(--dbz-ink);
+}
+.power-toggle-label { display: flex; align-items: center; justify-content: center; gap: 5px; font: 700 9px 'JetBrains Mono', monospace; }
+.power-toggle-options { display: grid; grid-template-columns: 1fr 1.8fr; width: 100%; font: 16px 'Bangers', Impact, sans-serif; }
+.power-toggle-options span { padding: 3px 5px; border-radius: 3px; }
+.power-toggle-options .is-selected { background: var(--t-accent-main); color: var(--dbz-ink); box-shadow: inset 0 0 0 1px var(--dbz-ink); }
+header .power-toggle { min-height: 44px; padding: 2px 4px; width: 154px; }
+header .power-toggle-label { font-size: 8px; }
+header .power-toggle-options { font-size: 14px; }
+header nav { gap: 1rem !important; }
+header .anime-btn { padding: .35rem .65rem; min-height: 38px; font-size: 1rem; }
+.section-anime { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1.5rem; }
+.hero-speed-lines { position: absolute; inset: 0; pointer-events: none; background: repeating-conic-gradient(from 4deg at 80% 45%, var(--t-speed-line) 0deg .5deg, transparent .5deg 13deg); }
+.hero-character { position: relative; width: min(100%, 420px); aspect-ratio: 896 / 1200; isolation: isolate; }
+.character-image { position: relative; width: 100%; height: 100%; object-fit: contain; border: 3px solid var(--t-chapter-border); border-radius: 8px; filter: var(--t-character-filter); box-shadow: var(--t-character-shadow); transition: filter .35s ease, box-shadow .35s ease; }
+.character-energy { position: absolute; inset: -20px; background: var(--t-accent-main); opacity: var(--t-energy-opacity); clip-path: polygon(50% 0,58% 12%,75% 3%,76% 20%,96% 15%,89% 35%,100% 44%,91% 58%,99% 78%,81% 80%,84% 100%,60% 94%,45% 100%,31% 92%,10% 98%,15% 79%,0 70%,9% 51%,1% 30%,19% 28%,19% 8%,38% 17%); animation: power-breathe var(--t-energy-duration) ease-in-out infinite; }
+@keyframes power-breathe { 50% { transform: scale(var(--t-energy-scale)); } }
+#hero h1 { padding-bottom: .12em; }
+#hero .section-anime { padding-top: 1rem; }
+#hero .grid { min-height: 70vh; }
+#hero .character-image { max-height: 620px; }
+#about h3.font-manga { line-height: 1.05; text-shadow: 2px 2px 0 var(--t-accent-main) !important; }
+#work h3.font-manga { color: var(--t-accent-main); -webkit-text-stroke: 1px var(--dbz-ink); paint-order: stroke fill; text-shadow: var(--t-heading-shadow); filter: none; }
+.project-visual > div:last-child { border-color: var(--t-chapter-border); box-shadow: var(--t-panel-shadow); transition: box-shadow .25s ease, border-color .25s ease; }
+.project-visual button[aria-pressed="true"] { background: var(--t-accent-main); color: var(--dbz-ink); }
+.project-visual button[aria-pressed="true"] svg { color: var(--dbz-ink); }
+.project-visual button[aria-pressed="true"] span { color: inherit; }
+.project-visual button[aria-pressed="true"] span.font-code { background: transparent; }
+#work .project-visual h3.font-manga { font-size: 2rem; -webkit-text-stroke: 0; color: var(--t-heading); text-shadow: none; }
+.project-visual .font-code { overflow-wrap: anywhere; }
+.project-visual > div:last-child > div:first-child { gap: 1rem; flex-wrap: wrap; }
+.project-visual > div:last-child > div:first-child > div { min-width: 0; }
+.project-visual .text-emerald-400 { color: var(--t-cool-ink); }
+.contact-email { max-width: 100%; }
+.contact-email span { overflow-wrap: anywhere; min-width: 0; }
+.select-none { user-select: auto; }
+@media (min-width: 640px) { .section-anime { padding-inline: 2rem; } }
+@media (max-width: 639px) {
+  section h2.font-manga { font-size: 2rem; overflow-wrap: anywhere; }
+  section h3.font-manga { overflow-wrap: anywhere; }
+  #hero { padding-top: 2rem; }
+  #hero .section-anime { padding-top: 0; }
+  #hero h1 { font-size: 5rem; }
+  #hero .hero-character { width: min(85%, 340px); }
+  #hero .anime-btn { padding: .65rem 1rem; }
+  #about h3.font-manga { font-size: 3rem; }
+  #work h3.font-manga { font-size: 3rem; }
+  #work .project-visual h3.font-manga { font-size: 1.75rem; }
+  #contact h3.font-manga { font-size: 3.75rem; line-height: .95; }
+  .contact-email { padding: .75rem; font-size: 1.2rem; }
+  #credentials .group > div:first-of-type { gap: .75rem; }
+  #credentials h3 { font-size: 1.5rem; }
+  .project-visual .flex.justify-between { flex-wrap: wrap; gap: .75rem; }
+  .project-visual .flex.items-center.gap-3 { flex-wrap: wrap; }
+  .project-visual .font-manga { overflow-wrap: normal; }
+  #work .project-visual h3.font-manga { overflow-wrap: normal; }
+  .project-visual .p-6 { padding: 1rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

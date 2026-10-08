@@ -12,30 +12,56 @@ const STEPS = [
   { step: 7, title: 'Invoice', code: '07', detail: 'Three-way invoice matching (PO, Receipt, Invoice) with immutable audit logging.' },
 ];
 
+/** Inset panel used for the step-4 matrix, the step-5 stack and the audit line. */
+const PANEL = {
+  backgroundColor: 'var(--t-bg-secondary)',
+  borderColor: 'var(--t-hairline)',
+  color: 'var(--t-text-secondary)',
+} as const;
+
 export const VendorBridgeVisual = () => {
   const [activeStep, setActiveStep] = useState(1);
   const current = STEPS.find((s) => s.step === activeStep) || STEPS[0];
 
   return (
     <div className="project-visual relative w-full max-w-6xl mx-auto my-6">
-      <div className="relative rounded-lg md:rounded-lg bg-[var(--t-card-bg)] text-[var(--t-text-primary)] border-[4px] border-[var(--t-chapter-border)] shadow-[8px_8px_0px_#E34835] overflow-hidden">
-        {/* Window Chrome Header Bar */}
-        <div className="flex items-center justify-between px-6 py-4 bg-[var(--t-bg-secondary)] text-[var(--t-text-primary)] border-b-4 border-[var(--t-chapter-border)]">
+      <div
+        className="relative rounded-2xl border overflow-hidden"
+        style={{
+          backgroundColor: 'var(--t-card-bg)',
+          color: 'var(--t-text-primary)',
+          borderColor: 'var(--t-hairline)',
+        }}
+      >
+        {/* Window chrome */}
+        <div
+          className="flex flex-wrap items-center justify-between gap-3 px-6 py-4 border-b"
+          style={{ backgroundColor: 'var(--t-bg-secondary)', borderColor: 'var(--t-hairline)' }}
+        >
           <div className="flex items-center gap-2.5">
-            <span className="w-3 h-3 rounded-full bg-[#E34835]" />
-            <span className="w-3 h-3 rounded-full bg-[#FFD447]" />
-            <span className="w-3 h-3 rounded-full bg-[var(--t-card-bg)]" />
-            <span className="ml-3 font-code text-xs font-bold text-[var(--t-accent-ink)] uppercase tracking-wider">
+            <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: 'var(--t-accent-main)' }} />
+            <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: 'var(--t-accent-cool)' }} />
+            <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: 'var(--t-hairline)' }} />
+            <span
+              className="ml-3 font-code text-[11px] font-bold uppercase tracking-widest"
+              style={{ color: 'var(--t-text-muted)' }}
+            >
               VENDORBRIDGE // AUTOMATED PROCUREMENT PIPELINE
             </span>
           </div>
-          <span className="font-manga text-sm text-[var(--dbz-ink)] bg-[var(--t-accent-alt)] px-3 py-1 rounded-lg border-2 border-[var(--t-chapter-border)] uppercase">
+          <span
+            className="font-code text-[11px] font-bold uppercase tracking-widest px-3 py-1 rounded-full"
+            style={{ backgroundColor: 'var(--t-accent-main)', color: '#FFFFFF' }}
+          >
             STEP {current.step} OF 7
           </span>
         </div>
 
-        {/* ──── HORIZONTAL PIPELINE TRACKER ──── */}
-        <div className="p-4 md:p-6 bg-[var(--t-bg-secondary)] text-[var(--t-text-primary)] border-b-4 border-[var(--t-chapter-border)] overflow-x-auto scrollbar-none">
+        {/* ──── PIPELINE TRACKER ──── */}
+        <div
+          className="p-4 md:p-6 border-b overflow-x-auto"
+          style={{ backgroundColor: 'var(--t-bg-secondary)', borderColor: 'var(--t-hairline)' }}
+        >
           <div className="flex items-center gap-2 min-w-max">
             {STEPS.map((s, idx) => {
               const isActive = activeStep === s.step;
@@ -46,27 +72,31 @@ export const VendorBridgeVisual = () => {
                   <button
                     aria-pressed={isActive}
                     onClick={() => setActiveStep(s.step)}
-                    className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-manga text-base tracking-wider border-2 transition-all duration-200 ${
+                    className={`flex items-center gap-2 px-4 py-2.5 rounded-full border font-body text-sm font-medium transition-all duration-200 ${
                       isActive
-                        ? 'bg-[var(--t-accent-alt)] text-[var(--dbz-ink)] border-[var(--t-divider)] shadow-[3px_3px_0px_#FFD447]'
-                        : isPast
-                        ? 'bg-[var(--t-accent-main)] text-[var(--dbz-ink)] border-[var(--t-chapter-border)]'
-                        : 'bg-[var(--t-bg-panel)] text-[var(--t-text-secondary)] border-[var(--t-chapter-border)] hover:text-[var(--t-text-primary)]'
+                        ? 'border-transparent font-semibold'
+                        : 'border-[var(--t-hairline)] hover:border-[var(--t-accent-main)]'
                     }`}
+                    style={
+                      isActive
+                        ? { backgroundColor: 'var(--t-accent-main)', color: '#FFFFFF' }
+                        : isPast
+                          ? { backgroundColor: 'var(--t-surface)', color: 'var(--t-bg-primary)' }
+                          : { color: 'var(--t-text-secondary)' }
+                    }
                   >
                     {isPast ? (
-                      <CheckCircle2 className="w-4 h-4 text-current" />
+                      <CheckCircle2 className="w-4 h-4" />
                     ) : (
-                      <span className="font-code text-xs font-bold">{s.code}</span>
+                      <span className="font-code text-[11px] font-bold">{s.code}</span>
                     )}
                     <span>{s.title}</span>
                   </button>
 
                   {idx < STEPS.length - 1 && (
                     <ArrowRight
-                      className={`w-4 h-4 ${
-                        isPast ? 'text-[var(--t-accent-ink)]' : 'text-[var(--t-text-primary)]/20'
-                      }`}
+                      className="w-4 h-4 shrink-0"
+                      style={{ color: isPast ? 'var(--t-accent-main)' : 'var(--t-hairline)' }}
                     />
                   )}
                 </div>
@@ -75,8 +105,8 @@ export const VendorBridgeVisual = () => {
           </div>
         </div>
 
-        {/* ──── ACTIVE STEP WORKFLOW DISPLAY PANEL ──── */}
-        <div className="p-6 md:p-10 min-h-[340px] flex flex-col justify-between bg-halftone-cream relative">
+        {/* ──── ACTIVE STEP PANEL ──── */}
+        <div className="p-6 md:p-10 min-h-[340px] flex flex-col justify-between relative">
           <AnimatePresence mode="wait">
             <motion.div
               key={current.step}
@@ -86,45 +116,62 @@ export const VendorBridgeVisual = () => {
               transition={{ duration: 0.25 }}
               className="space-y-6"
             >
-              <div className="flex flex-wrap items-center justify-between gap-4 border-b-2 border-[var(--t-chapter-border)]/20 pb-4">
-                <div className="flex items-center gap-3">
-                  <span className="font-manga text-4xl text-[var(--t-alt-ink)]">
+              <div
+                className="flex flex-wrap items-center justify-between gap-4 border-b pb-4"
+                style={{ borderColor: 'var(--t-hairline)' }}
+              >
+                <div className="flex flex-wrap items-baseline gap-3">
+                  <span className="font-code text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--t-text-muted)' }}>
                     STAGE {current.code}
                   </span>
-                  <h3 className="font-manga text-4xl text-[var(--t-text-primary)] tracking-wide uppercase">
+                  <h3
+                    className="font-display text-3xl md:text-4xl uppercase leading-none"
+                    style={{ color: 'var(--t-heading)' }}
+                  >
                     {current.title}
                   </h3>
                 </div>
 
-                <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[var(--t-bg-secondary)] text-[var(--t-accent-ink)] font-code text-xs font-bold border-2 border-[var(--t-chapter-border)]">
-                  <ShieldCheck className="w-4 h-4 text-[var(--t-alt-ink)]" />
+                <span
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border font-code text-[11px] font-bold uppercase tracking-widest"
+                  style={{ borderColor: 'var(--t-hairline)', color: 'var(--t-accent-ink)' }}
+                >
+                  <ShieldCheck className="w-3.5 h-3.5" />
                   <span>PHASE {current.step} / 7 VERIFIED</span>
-                </div>
+                </span>
               </div>
 
-              <p className="font-body text-xl font-medium text-[var(--t-text-primary)] leading-relaxed max-w-2xl">
+              <p className="font-body text-lg md:text-xl font-medium leading-relaxed max-w-2xl" style={{ color: 'var(--t-text-secondary)' }}>
                 {current.detail}
               </p>
 
-              {/* Step 4 Special Matrix: Quotation Comparison Table */}
+              {/* Step 4: quotation comparison matrix */}
               {activeStep === 4 && (
-                <div className="p-5 rounded-lg bg-[var(--t-bg-secondary)] text-[var(--t-text-primary)] border-[3px] border-[var(--t-chapter-border)] shadow-[4px_4px_0px_#E34835] space-y-3 font-code text-xs">
-                  <div className="font-manga text-lg text-[var(--t-accent-ink)] flex items-center justify-between">
-                    <span>AUTOMATED VENDOR COMPARISON MATRIX</span>
-                    <span className="text-[var(--t-alt-ink)]">RFQ #2048</span>
+                <div className="p-5 rounded-xl border space-y-3 font-code text-xs" style={PANEL}>
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className="font-bold uppercase tracking-widest" style={{ color: 'var(--t-accent-ink)' }}>
+                      AUTOMATED VENDOR COMPARISON MATRIX
+                    </span>
+                    <span style={{ color: 'var(--t-text-muted)' }}>RFQ #2048</span>
                   </div>
                   <div className="space-y-2">
-                    <div className="flex justify-between font-bold text-[var(--t-text-primary)] pb-2 border-b border-[var(--t-divider)]/20">
+                    <div
+                      className="flex justify-between font-bold pb-2 border-b"
+                      style={{ color: 'var(--t-text-primary)', borderColor: 'var(--t-hairline)' }}
+                    >
                       <span>VENDOR NAME</span>
                       <span>UNIT QUOTE</span>
                       <span>EVALUATION</span>
                     </div>
-                    <div className="flex justify-between text-[var(--t-accent-ink)] font-bold bg-[var(--t-bg-panel)] p-2 rounded">
+                    <div
+                      className="flex justify-between p-2 rounded-lg font-bold"
+                      style={{ backgroundColor: 'var(--t-bg-panel)', color: 'var(--t-accent-ink)' }}
+                    >
                       <span>TechCore Solutions</span>
                       <span>₹48,500</span>
-                      <span className="text-emerald-400">RECOMMENDED (WINNER)</span>
+                      <span style={{ color: 'var(--t-cool-ink)' }}>RECOMMENDED (WINNER)</span>
                     </div>
-                    <div className="flex justify-between text-[var(--t-text-secondary)] p-2">
+                    <div className="flex justify-between p-2">
                       <span>InfraPro Systems</span>
                       <span>₹52,100</span>
                       <span>HIGHER SLA COST</span>
@@ -133,30 +180,40 @@ export const VendorBridgeVisual = () => {
                 </div>
               )}
 
-              {/* Step 5 Special: Approval Sign-Off Workflow */}
+              {/* Step 5: approval sign-off stack */}
               {activeStep === 5 && (
-                <div className="p-5 rounded-lg bg-[var(--t-bg-secondary)] text-[var(--t-text-primary)] border-[3px] border-[var(--t-chapter-border)] space-y-3 font-code text-xs">
-                  <div className="font-manga text-lg text-[var(--t-alt-ink)]">
+                <div className="p-5 rounded-xl border space-y-3 font-code text-xs" style={PANEL}>
+                  <div className="font-bold uppercase tracking-widest" style={{ color: 'var(--t-accent-ink)' }}>
                     ROLE-BASED MULTI-TIER APPROVAL STACK
                   </div>
-                  <div className="flex items-center gap-3 text-[var(--t-text-primary)]/90">
-                    <span className="px-2.5 py-1 bg-emerald-800 text-white rounded font-bold">APPROVED</span>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span
+                      className="px-2.5 py-1 rounded-full font-bold"
+                      style={{ backgroundColor: 'var(--t-accent-cool)', color: '#FFFFFF' }}
+                    >
+                      APPROVED
+                    </span>
                     <span>Procurement Manager (JWT Token Verified)</span>
                   </div>
-                  <div className="flex items-center gap-3 text-[var(--t-text-primary)]/90">
-                    <span className="px-2.5 py-1 bg-emerald-800 text-white rounded font-bold">APPROVED</span>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span
+                      className="px-2.5 py-1 rounded-full font-bold"
+                      style={{ backgroundColor: 'var(--t-accent-cool)', color: '#FFFFFF' }}
+                    >
+                      APPROVED
+                    </span>
                     <span>Finance Controller (Sign-off Logged)</span>
                   </div>
                 </div>
               )}
 
-              {/* Audit Log for Other Steps */}
+              {/* Audit log for the remaining steps */}
               {activeStep !== 4 && activeStep !== 5 && (
-                <div className="p-4 rounded-lg bg-[var(--t-bg-secondary)] text-[var(--t-text-primary)] font-code text-xs border-2 border-[var(--t-chapter-border)] flex items-center justify-between">
-                  <span className="text-[var(--t-accent-ink)] font-bold">
+                <div className="p-4 rounded-xl border font-code text-xs flex flex-wrap items-center justify-between gap-3" style={PANEL}>
+                  <span className="font-bold" style={{ color: 'var(--t-accent-ink)' }}>
                     [AUDIT LOG] Stage {current.step} execution completed via Node.js + Express + PostgreSQL
                   </span>
-                  <ChevronRight className="w-4 h-4 text-[var(--t-alt-ink)]" />
+                  <ChevronRight className="w-4 h-4" style={{ color: 'var(--t-text-muted)' }} />
                 </div>
               )}
             </motion.div>

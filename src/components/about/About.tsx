@@ -1,153 +1,115 @@
 import { PORTFOLIO_DATA } from '../../data/portfolio';
-import { motion } from 'framer-motion';
-import { KanjiEmblem } from '../ui/AnimePrimitives';
+import { ChapterHeader } from '../ui/ChapterHeader';
+import { AssembleHeading, Reveal, StaggerGroup, StaggerItem } from '../ui/motion';
 
 export const About = () => {
   return (
     <section
       id="about"
-      className="relative py-24 md:py-36 border-b-[4px] overflow-hidden bg-halftone-cream select-none transition-colors duration-500"
+      className="relative py-24 md:py-36 border-b overflow-hidden select-none transition-colors duration-500"
       style={{
         backgroundColor: 'var(--t-bg-primary)',
         color: 'var(--t-text-primary)',
-        borderColor: 'var(--t-chapter-border)',
+        borderColor: 'var(--t-hairline)',
       }}
     >
-      {/* Speed Rays Background */}
-      <div className="absolute inset-0 pointer-events-none opacity-10 overflow-hidden">
-        <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-          <g stroke="var(--t-accent-main)" strokeWidth="1.5">
-            {Array.from({ length: 24 }).map((_, i) => {
-              const angle = (i * 360) / 24;
-              const rad = (angle * Math.PI) / 180;
-              const x1 = 300 + Math.cos(rad) * 100;
-              const y1 = 300 + Math.sin(rad) * 100;
-              const x2 = 300 + Math.cos(rad) * 900;
-              const y2 = 300 + Math.sin(rad) * 900;
-              return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} strokeDasharray="10 8" />;
-            })}
-          </g>
-        </svg>
-      </div>
+      <div className="shell relative z-10 space-y-16">
+        <ChapterHeader index="01" label="ORIGIN" eyebrow="ABOUT ME" badge="01 / 06" />
 
-      <div className="section-anime relative z-10 space-y-16">
-        {/* Chapter Header */}
-        <div
-          className="flex items-center justify-between border-b-[4px] pb-6"
-          style={{ borderColor: 'var(--t-chapter-border)' }}
-        >
-          <div className="flex items-center gap-4">
-            <KanjiEmblem symbol="亀" size="md" className="shadow-[4px_4px_0px_#11172C]" />
-            <div>
-              <span className="font-code text-xs font-bold tracking-widest uppercase" style={{ color: 'var(--t-accent-ink)' }}>
-                [ CHARACTER ORIGIN ]
-              </span>
-              <h2
-                className="font-manga text-5xl md:text-7xl tracking-wide uppercase leading-none mt-1"
-                style={{ color: 'var(--t-heading)' }}
-              >
-                01 / ORIGIN
-              </h2>
-            </div>
-          </div>
-          <span
-            className="hidden sm:inline-block px-4 py-1.5 font-manga text-base border-2 border-[#11172C] shadow-[3px_3px_0px_#11172C] rounded-lg uppercase"
-            style={{ backgroundColor: 'var(--t-accent-main)', color: 'var(--dbz-ink)' }}
-          >
-            CHAPTER 01
-          </span>
-        </div>
-
-        {/* Editorial Statement */}
+        {/* Editorial statement */}
         <div className="max-w-5xl space-y-10">
-          <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-2"
-          >
-            <span className="font-code text-xs font-bold uppercase tracking-widest block" style={{ color: 'var(--t-accent-ink)' }}>
+          <Reveal direction="up" duration={0.6} className="space-y-4">
+            <span
+              className="font-code text-xs font-bold uppercase tracking-widest block"
+              style={{ color: 'var(--t-accent-ink)' }}
+            >
               [ CORE PHILOSOPHY ]
             </span>
             <h3
-              className="font-manga text-6xl sm:text-8xl md:text-9xl leading-[0.88] tracking-wider uppercase"
-              style={{ color: 'var(--t-heading)', textShadow: '5px 5px 0px var(--t-accent-main)' }}
+              className="font-display text-5xl sm:text-7xl md:text-8xl uppercase leading-[0.92]"
+              style={{ color: 'var(--t-heading)' }}
             >
-              I BUILD TECHNOLOGY <br />
-              <span style={{ color: 'var(--t-accent-ink)', WebkitTextStroke: '2px #11172C' }}>
-                TO SOLVE REAL PROBLEMS.
+              <AssembleHeading text="I BUILD TECHNOLOGY" stagger={0.03} />
+              <br />
+              <span style={{ color: 'var(--t-accent-main)' }}>
+                <AssembleHeading text="TO SOLVE REAL PROBLEMS." stagger={0.03} delay={0.25} />
               </span>
             </h3>
-          </motion.div>
+          </Reveal>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            className="font-body text-xl md:text-2xl font-medium leading-relaxed max-w-4xl border-l-4 pl-6 py-1"
-            style={{ color: 'var(--t-text-secondary)', borderColor: 'var(--t-accent-main)' }}
-          >
-            {PORTFOLIO_DATA.personal.summary}
-          </motion.p>
+          <Reveal direction="up" delay={0.15} duration={0.6}>
+            <p
+              className="font-body text-xl md:text-2xl font-medium leading-relaxed max-w-4xl border-l pl-6 py-1"
+              style={{ color: 'var(--t-text-secondary)', borderColor: 'var(--t-accent-main)' }}
+            >
+              {PORTFOLIO_DATA.personal.summary}
+            </p>
+          </Reveal>
         </div>
 
-        {/* Focus Pillars */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.25 }}
-          className="pt-8 border-t-2 grid grid-cols-1 md:grid-cols-12 gap-8 items-center"
-          style={{ borderColor: 'var(--t-divider)' }}
+        {/* Focus pillars */}
+        <Reveal
+          direction="up"
+          delay={0.25}
+          duration={0.6}
+          className="pt-10 border-t grid grid-cols-1 md:grid-cols-12 gap-10 items-start"
+          style={{ borderColor: 'var(--t-hairline)' }}
         >
-          <div className="md:col-span-7 space-y-3">
-            <span className="font-code text-xs font-bold uppercase tracking-widest block" style={{ color: 'var(--t-accent-ink)' }}>
+          <div className="md:col-span-7 space-y-4">
+            <span
+              className="font-code text-xs font-bold uppercase tracking-widest block"
+              style={{ color: 'var(--t-accent-ink)' }}
+            >
               ACTIVE TRAINING FOCUS
             </span>
-            <div className="flex flex-wrap gap-2.5">
+            <StaggerGroup className="flex flex-wrap gap-2.5" stagger={0.06}>
               {PORTFOLIO_DATA.currentFocus.map((item) => (
-                <span
+                <StaggerItem
                   key={item}
-                  className="px-4 py-1.5 font-manga text-lg rounded-lg border-2 border-[#11172C] shadow-[2px_2px_0px_var(--t-accent-main)] hover:scale-105 transition-transform"
-                  style={{ backgroundColor: 'var(--t-tag-bg)', color: 'var(--t-tag-text)' }}
+                  className="card card-hover px-4 py-2 font-body text-sm font-semibold"
                 >
-                  ⚡ {item}
-                </span>
+                  {item}
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerGroup>
           </div>
 
-          <div className="md:col-span-5 space-y-3 border-l-0 md:border-l-2 pl-0 md:pl-8" style={{ borderColor: 'var(--t-divider)' }}>
-            <span className="font-code text-xs font-bold uppercase tracking-widest block" style={{ color: 'var(--t-accent-ink)' }}>
+          <div
+            className="md:col-span-5 space-y-4 border-l-0 md:border-l pl-0 md:pl-10"
+            style={{ borderColor: 'var(--t-hairline)' }}
+          >
+            <span
+              className="font-code text-xs font-bold uppercase tracking-widest block"
+              style={{ color: 'var(--t-accent-ink)' }}
+            >
               ACADEMIC ACADEMIES
             </span>
-            <div className="space-y-2 font-body text-base font-bold">
-              <div
-                className="flex justify-between items-center p-3 rounded-lg border-2 border-[#11172C] shadow-[3px_3px_0px_var(--t-accent-main)]"
-                style={{ backgroundColor: 'var(--t-surface)', color: '#FFF1CF' }}
+            <StaggerGroup className="space-y-2.5" stagger={0.09} delay={0.12}>
+              <StaggerItem
+                className="card card-invert flex justify-between items-center gap-4 px-4 py-3.5"
               >
-                <span>SILVER OAK UNIVERSITY</span>
+                <span className="font-body text-sm font-semibold">SILVER OAK UNIVERSITY</span>
                 <span
-                  className="font-code text-xs px-2 py-1 rounded"
-                  style={{ backgroundColor: 'var(--t-accent-main)', color: 'var(--dbz-ink)' }}
+                  className="font-code text-[11px] font-bold px-2.5 py-1 rounded-full shrink-0"
+                  style={{ backgroundColor: 'var(--t-accent-main)', color: '#FFFFFF' }}
                 >
                   B.TECH (8.83)
                 </span>
-              </div>
-              <div
-                className="flex justify-between items-center p-3 rounded-lg border-2 border-[#11172C] shadow-[3px_3px_0px_#35B8FF]"
-                style={{ backgroundColor: 'var(--t-surface)', color: '#FFF1CF' }}
+              </StaggerItem>
+              <StaggerItem
+                className="card card-invert flex justify-between items-center gap-4 px-4 py-3.5"
               >
-                <span>IIT MADRAS</span>
-                <span className="font-code text-xs px-2 py-1 bg-[#35B8FF] text-[#11172C] rounded">
+                <span className="font-body text-sm font-semibold">IIT MADRAS</span>
+                <span
+                  className="font-code text-[11px] font-bold px-2.5 py-1 rounded-full shrink-0"
+                  style={{ backgroundColor: 'var(--t-accent-cool)', color: '#FFFFFF' }}
+                >
                   BS DATA SCIENCE
                 </span>
-              </div>
-            </div>
+              </StaggerItem>
+            </StaggerGroup>
           </div>
-        </motion.div>
+        </Reveal>
       </div>
     </section>
   );

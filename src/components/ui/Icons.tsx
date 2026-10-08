@@ -1,8 +1,14 @@
-import React from 'react';
+import type { CSSProperties, FC } from 'react';
 
-export const GithubIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
+interface IconProps {
+  className?: string;
+  style?: CSSProperties;
+}
+
+export const GithubIcon: FC<IconProps> = ({ className = 'w-4 h-4', style }) => (
   <svg
     className={className}
+    style={style}
     fill="currentColor"
     viewBox="0 0 24 24"
     aria-hidden="true"
@@ -15,9 +21,10 @@ export const GithubIcon: React.FC<{ className?: string }> = ({ className = 'w-4 
   </svg>
 );
 
-export const LinkedinIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
+export const LinkedinIcon: FC<IconProps> = ({ className = 'w-4 h-4', style }) => (
   <svg
     className={className}
+    style={style}
     fill="currentColor"
     viewBox="0 0 24 24"
     aria-hidden="true"

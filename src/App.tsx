@@ -8,6 +8,7 @@ import { Capabilities } from './components/capabilities/Capabilities';
 import { Journey } from './components/journey/Journey';
 import { Credentials } from './components/credentials/Credentials';
 import { Contact } from './components/contact/Contact';
+import { PowerSurge, CursorDot, ScrollProgress } from './components/ui/motion';
 
 export function App() {
   return (
@@ -17,11 +18,14 @@ export function App() {
         {/* Skip to main content accessibility link */}
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-[#F47C20] focus:text-[#FFF3D6] focus:font-manga focus:text-lg focus:rounded-lg focus:border-2 focus:border-[#10172A] focus:shadow-[4px_4px_0px_#10172A]"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[210] focus:px-4 focus:py-2 focus:rounded-full focus:font-body focus:text-sm focus:font-semibold focus:bg-[var(--t-accent-main)] focus:text-white"
         >
           Skip to main content
         </a>
 
+        <ScrollProgress />
+        <PowerSurge />
+        <CursorDot />
         <FloatingNavbar />
 
         <main id="main-content" className="w-full">

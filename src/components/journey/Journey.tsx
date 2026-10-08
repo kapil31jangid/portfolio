@@ -1,185 +1,233 @@
+import { useRef } from 'react';
 import { PORTFOLIO_DATA } from '../../data/portfolio';
-import { motion } from 'framer-motion';
-import { KanjiEmblem } from '../ui/AnimePrimitives';
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import { ChapterHeader } from '../ui/ChapterHeader';
+import { OrbitRing, Reveal, StaggerGroup, StaggerItem } from '../ui/motion';
 import { Award, GraduationCap, Users } from 'lucide-react';
 
+/** Where the rail line sits, and therefore where the markers centre on it. */
+const RAIL_LEFT = 19;
+
 export const Journey = () => {
+  const timelineRef = useRef<HTMLDivElement>(null);
+  const prefersReduced = useReducedMotion();
+
+  // Drives the marker down the rail as the timeline passes the viewport.
+  // Ranges are inset from 0/100% so it starts and finishes inside the line.
+  const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ['start 85%', 'end 45%'],
+  });
+  const markerTop = useTransform(scrollYProgress, [0, 1], ['4%', '96%']);
+
   const milestones = [
     {
       year: '2025', title: 'Silver Oak University',
       subtitle: 'B.Tech Computer Science & Engineering',
       meta: 'Jul 2025 – Jul 2029 · CGPA 8.83',
       detail: 'Core CSE fundamentals, OOP, Data Structures, DBMS & active participation in technical societies.',
-      icon: GraduationCap, color: 'var(--t-accent-ink)', align: 'left',
+      icon: GraduationCap,
     },
     {
       year: '2025', title: 'IIT Madras',
       subtitle: 'BS Data Science & Applications',
       meta: 'Sep 2025 – Present · Remote',
       detail: 'Specializing in machine learning algorithms, statistical data analytics & computational systems.',
-      icon: GraduationCap, color: 'var(--t-cool-ink)', align: 'right',
+      icon: GraduationCap,
     },
     {
       year: '2026', title: 'CodeXLab',
       subtitle: 'Organizer',
       meta: '2026 – Present · SOU',
       detail: 'Organized university technical community and hands-on C/C++ bootcamp focused on programming fundamentals & peer mentorship.',
-      icon: Users, color: 'var(--t-accent-bright)', align: 'left',
+      icon: Users,
     },
     {
       year: '2026', title: 'IEEE SOU SIGHT SBG',
       subtitle: 'Secretary',
       meta: 'Apr 2026 – Aug 2026 · Leadership',
       detail: 'Led humanitarian technology initiatives and coordinated technical activities, community projects & outreach under IEEE SIGHT.',
-      icon: Award, color: 'var(--t-accent-ink)', align: 'right',
+      icon: Award,
     },
   ];
 
   return (
     <section
       id="journey"
-      className="relative py-28 md:py-40 border-b-[4px] overflow-hidden bg-halftone-cream select-none transition-colors duration-500"
+      className="relative py-28 md:py-40 border-b select-none transition-colors duration-500"
       style={{
         backgroundColor: 'var(--t-bg-primary)',
         color: 'var(--t-text-primary)',
-        borderColor: 'var(--t-chapter-border)',
+        borderColor: 'var(--t-hairline)',
       }}
     >
-      <div className="section-anime relative z-10 space-y-20">
-        {/* Chapter Header */}
-        <div
-          className="flex items-center justify-between border-b-[4px] pb-6"
-          style={{ borderColor: 'var(--t-chapter-border)' }}
-        >
-          <div className="flex items-center gap-4">
-            <KanjiEmblem symbol="界" size="md" className="shadow-[4px_4px_0px_#11172C]" />
-            <div>
-              <span className="font-code text-xs font-bold tracking-widest uppercase" style={{ color: 'var(--t-accent-ink)' }}>
-                [ PROGRESSION & CHECKPOINTS ]
-              </span>
-              <h2 className="font-manga text-5xl md:text-7xl tracking-wide uppercase leading-none mt-1" style={{ color: 'var(--t-heading)' }}>
-                04 / JOURNEY
-              </h2>
+      <div className="shell relative z-10 space-y-20">
+        <ChapterHeader index="04" label="JOURNEY" eyebrow="EXPERIENCE & EDUCATION" badge="04 / 06" />
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+          {/* ── STICKY RAIL ──
+              Holds its position while the timeline scrolls past, so the
+              section reads as a running log rather than a list. Purely
+              decorative, hence `aria-hidden` — the milestones carry the
+              content, and announcing an empty graphic would only add noise.
+              Hidden below `lg`, where there is no room to pin anything. */}
+          <aside aria-hidden="true" className="hidden lg:flex lg:col-span-4 justify-center">
+            <div className="sticky top-32 w-full max-w-[320px] aspect-square">
+              <OrbitRing duration={22} tilt={70} />
+
+              {/* Concentric rings, so the mark reads as a radar sweep. */}
+              <span
+                className="absolute inset-[15%] rounded-full border"
+                style={{ borderColor: 'var(--t-hairline)' }}
+              />
+              <span
+                className="absolute inset-[31%] rounded-full border"
+                style={{ borderColor: 'var(--t-hairline)' }}
+              />
+              <span
+                className="absolute inset-[43%] rounded-full"
+                style={{ backgroundColor: 'var(--t-accent-main)', opacity: 0.1 }}
+              />
             </div>
-          </div>
-          <span
-            className="hidden sm:inline-block px-4 py-1.5 font-manga text-base border-2 border-[#11172C] shadow-[3px_3px_0px_#11172C] rounded-lg uppercase"
-            style={{ backgroundColor: 'var(--t-accent-main)', color: 'var(--dbz-ink)' }}
-          >
-            CHAPTER 04
-          </span>
-        </div>
+          </aside>
 
-        {/* Winding Path */}
-        <div className="relative max-w-5xl mx-auto py-4">
-          {/* Center line */}
-          <div
-            className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-1.5 pointer-events-none hidden md:block"
-            style={{ backgroundColor: 'var(--t-divider)' }}
-          >
-            <motion.div
-              initial={{ height: '0%' }}
-              whileInView={{ height: '100%' }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.8, ease: 'easeOut' }}
-              className="w-full bg-gradient-to-b from-[#F47B20] via-[#FFD447] to-[#35B8FF]"
-            />
-          </div>
+          {/* ── TIMELINE ── */}
+          <div ref={timelineRef} className="lg:col-span-8 relative">
+            <div
+              className="absolute top-2 bottom-2 w-px pointer-events-none"
+              style={{ left: RAIL_LEFT, backgroundColor: 'var(--t-hairline)' }}
+            >
+              <motion.div
+                initial={{ height: '0%' }}
+                whileInView={{ height: '100%' }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.8, ease: 'easeOut' }}
+                className="w-full"
+                style={{ background: 'linear-gradient(180deg, var(--t-accent-cool), var(--t-accent-main))' }}
+              />
 
-          <div className="space-y-20 md:space-y-28">
-            {milestones.map((m, idx) => {
-              const Icon = m.icon;
-              const isLeft = m.align === 'left';
-              return (
+              {/* Marker riding the line. Hidden entirely under reduced motion —
+                  unlike the scroll progress bar, this one is pure decoration
+                  with no information to preserve. */}
+              {!prefersReduced && (
                 <motion.div
-                  key={m.title}
-                  initial={{ opacity: 0, y: 35 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-50px' }}
-                  transition={{ duration: 0.6, delay: 0.1 * idx }}
-                  className="relative grid grid-cols-1 md:grid-cols-12 gap-6 items-center"
-                >
-                  {/* Centre marker */}
-                  <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 z-20 hidden md:flex items-center justify-center">
+                  className="absolute left-1/2 rounded-full"
+                  style={{
+                    top: markerTop,
+                    width: 10,
+                    height: 10,
+                    marginLeft: -5,
+                    marginTop: -5,
+                    background: 'var(--t-accent-main)',
+                    boxShadow: '0 0 14px var(--t-accent-main)',
+                  }}
+                />
+              )}
+            </div>
+
+            <div className="space-y-8 md:space-y-10">
+              {milestones.map((m, idx) => {
+                const Icon = m.icon;
+                return (
+                  <Reveal
+                    key={m.title}
+                    direction="up"
+                    distance={1}
+                    delay={0.08 * idx}
+                    className="relative pl-14"
+                  >
+                    {/* Numbered marker, centred on the rail line */}
                     <motion.div
-                      whileHover={{ scale: 1.25 }}
-                      className="w-10 h-10 rounded-full border-[3px] flex items-center justify-center font-code text-xs font-bold"
+                      initial={{ scale: 0.4, opacity: 0 }}
+                      whileInView={{ scale: 1, opacity: 1 }}
+                      viewport={{ once: true, margin: '-50px' }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 22, delay: 0.1 * idx }}
+                      className="absolute top-7 w-10 h-10 rounded-full border flex items-center justify-center font-code text-[11px] font-bold z-10"
                       style={{
-                        backgroundColor: 'var(--t-surface)',
-                        color: 'var(--t-accent-main)',
-                        borderColor: 'var(--t-bg-primary)',
-                        boxShadow: '0 0 15px var(--t-aura-gold)',
+                        left: 0,
+                        backgroundColor: 'var(--t-bg-panel)',
+                        color: 'var(--t-accent-ink)',
+                        borderColor: 'var(--t-hairline)',
                       }}
                     >
                       0{idx + 1}
                     </motion.div>
-                  </div>
 
-                  <div className={`md:col-span-6 ${isLeft ? 'md:pr-12 md:text-right' : 'md:order-2 md:pl-12 md:text-left'}`}>
-                    <div className="space-y-3">
-                      <div className={`flex items-center gap-3 ${isLeft ? 'md:justify-end' : 'md:justify-start'}`}>
-                        <span
-                          className="font-manga text-6xl md:text-8xl drop-shadow-[4px_4px_0px_#11172C]"
-                          style={{ color: 'var(--t-accent-ink)' }}
-                        >
-                          {m.year}
-                        </span>
-                        <div
-                          className="p-2.5 rounded-lg border-2 border-[#11172C] shadow-[3px_3px_0px_#11172C]"
-                          style={{ backgroundColor: 'var(--t-surface)', color: '#FFF1CF' }}
-                        >
-                          <Icon className="w-5 h-5" style={{ color: 'var(--t-accent-main)' }} />
+                    <div className="card p-6 md:p-7 space-y-3">
+                      <div className="flex flex-wrap items-center justify-between gap-3">
+                        <div className="flex items-center gap-3">
+                          <span
+                            className="font-display text-4xl md:text-5xl leading-none"
+                            style={{ color: 'var(--t-accent-main)' }}
+                          >
+                            {m.year}
+                          </span>
+                          <span
+                            className="p-2 rounded-full border"
+                            style={{ borderColor: 'var(--t-hairline)', color: 'var(--t-accent-ink)' }}
+                          >
+                            <Icon className="w-4 h-4" />
+                          </span>
                         </div>
+
+                        {/* Date badge, as on the reference's experience cards */}
+                        <span
+                          className="font-code text-[11px] font-bold uppercase tracking-widest px-3 py-1 rounded-full border"
+                          style={{ borderColor: 'var(--t-hairline)', color: 'var(--t-text-muted)' }}
+                        >
+                          {m.meta}
+                        </span>
                       </div>
 
-                      <h3 className="font-manga text-3xl md:text-5xl uppercase tracking-wide leading-tight" style={{ color: 'var(--t-heading)' }}>
+                      <h3
+                        className="font-display text-2xl md:text-3xl uppercase leading-tight"
+                        style={{ color: 'var(--t-heading)' }}
+                      >
                         {m.title}
                       </h3>
-                      <p className="font-body text-xl font-bold" style={{ color: 'var(--t-accent-ink)' }}>
+                      <p className="font-body text-base font-semibold" style={{ color: 'var(--t-accent-ink)' }}>
                         {m.subtitle}
                       </p>
-                      <div className="font-code text-xs font-bold uppercase" style={{ color: 'var(--t-text-secondary)' }}>
-                        {m.meta}
-                      </div>
-                      <p className="font-body text-base font-medium leading-relaxed max-w-md pt-1" style={{ color: 'var(--t-text-secondary)' }}>
+                      <p className="font-body text-base leading-relaxed" style={{ color: 'var(--t-text-secondary)' }}>
                         {m.detail}
                       </p>
                     </div>
-                  </div>
-
-                  <div className={`hidden md:block md:col-span-6 ${isLeft ? 'md:order-2' : 'md:order-1'}`} />
-                </motion.div>
-              );
-            })}
+                  </Reveal>
+                );
+              })}
+            </div>
           </div>
         </div>
 
-        {/* Community Memberships */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="pt-12 border-t-2 space-y-4"
-          style={{ borderColor: 'var(--t-divider)' }}
+        {/* Community memberships */}
+        <Reveal
+          direction="up"
+          distance={0.9}
+          duration={0.6}
+          className="pt-12 border-t space-y-5"
+          style={{ borderColor: 'var(--t-hairline)' }}
         >
-          <div className="font-code text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--t-accent-ink)' }}>
+          <div
+            className="font-code text-xs font-bold uppercase tracking-widest"
+            style={{ color: 'var(--t-accent-ink)' }}
+          >
             COMMUNITY MEMBERSHIPS & GUILD AFFILIATIONS
           </div>
-          <div className="flex flex-wrap gap-4">
+          <StaggerGroup className="flex flex-wrap gap-3" stagger={0.08}>
             {PORTFOLIO_DATA.communityMemberships.map((mem) => (
-              <div
+              <StaggerItem
                 key={mem.name}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-[#11172C] shadow-[2px_2px_0px_var(--t-accent-main)]"
-                style={{ backgroundColor: 'var(--t-surface)', color: '#FFF1CF' }}
+                className="card flex items-center gap-2.5 px-4 py-2.5"
               >
-                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: 'var(--t-accent-main)' }} />
-                <span className="font-manga text-lg" style={{ color: 'var(--t-accent-main)' }}>{mem.name}</span>
-                <span className="font-code text-xs" style={{ color: 'rgba(255,241,207,0.7)' }}>({mem.period})</span>
-              </div>
+                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: 'var(--t-accent-main)' }} />
+                <span className="font-body text-sm font-semibold">{mem.name}</span>
+                <span className="font-code text-[11px]" style={{ color: 'var(--t-text-muted)' }}>
+                  ({mem.period})
+                </span>
+              </StaggerItem>
             ))}
-          </div>
-        </motion.div>
+          </StaggerGroup>
+        </Reveal>
       </div>
     </section>
   );

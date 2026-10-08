@@ -16,7 +16,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   // Apply data-theme to <html> on every change
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'super' ? '#0A1022' : '#FFF1CF');
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'super' ? '#0E0E10' : '#F4F1EA');
     try {
       localStorage.setItem(STORAGE_KEY, theme);
     } catch {

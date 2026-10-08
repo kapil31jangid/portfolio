@@ -1,144 +1,143 @@
 import { PORTFOLIO_DATA } from '../../data/portfolio';
-import { ArrowUpRight, Award, CheckCircle } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { KanjiEmblem } from '../ui/AnimePrimitives';
+import { ArrowUpRight } from 'lucide-react';
+import { ChapterHeader } from '../ui/ChapterHeader';
+import { CountUp, Reveal } from '../ui/motion';
+
+/**
+ * A short mark for the issuer, so each card carries a block of colour the way
+ * the reference site's certificate thumbnails do. Multi-word issuers give their
+ * initials; single-word ones give their first two letters.
+ */
+function monogram(issuer: string): string {
+  const words = issuer.split(/\s+/).filter(Boolean);
+  if (!words.length) return '—';
+  return words.length > 1
+    ? words.slice(0, 2).map((w) => w[0]).join('').toUpperCase()
+    : words[0].slice(0, 2).toUpperCase();
+}
 
 export const Credentials = () => {
+  const { certifications } = PORTFOLIO_DATA;
+  const total = String(certifications.length).padStart(2, '0');
+
   return (
     <section
       id="credentials"
-      className="relative py-24 md:py-36 border-b-[4px] overflow-hidden bg-halftone select-none transition-colors duration-500"
+      className="relative py-24 md:py-36 border-b overflow-hidden select-none transition-colors duration-500"
       style={{
         backgroundColor: 'var(--t-bg-secondary)',
         color: 'var(--t-text-primary)',
-        borderColor: 'var(--t-bg-secondary)',
+        borderColor: 'var(--t-hairline)',
       }}
     >
-      <div className="section-anime relative z-10 space-y-16">
-        {/* Chapter Header */}
-        <div
-          className="flex items-center justify-between border-b-[4px] pb-6"
-          style={{ borderColor: 'var(--t-divider)' }}
-        >
-          <div className="flex items-center gap-4">
-            <KanjiEmblem symbol="印" size="md" className="shadow-[4px_4px_0px_#11172C]" />
-            <div>
-              <span className="font-code text-xs font-bold tracking-widest uppercase" style={{ color: 'var(--t-accent-ink)' }}>
-                [ EARNED MILESTONES ]
-              </span>
-              <h2 className="font-manga text-5xl md:text-7xl tracking-wide uppercase leading-none mt-1" style={{ color: 'var(--t-text-primary)' }}>
-                05 / ACHIEVEMENTS
-              </h2>
-            </div>
-          </div>
-          <span
-            className="hidden sm:inline-block px-4 py-1.5 font-manga text-base border-2 border-[#11172C] shadow-[3px_3px_0px_#11172C] rounded-lg uppercase"
-            style={{ backgroundColor: 'var(--t-accent-main)', color: '#11172C' }}
+      <div className="shell relative z-10 space-y-16">
+        <ChapterHeader index="05" label="ACHIEVEMENTS" eyebrow="CERTIFICATIONS" badge="05 / 06" />
+
+        <div className="space-y-6">
+          {/* Sub-heading with the running count, mirroring the reference's
+              "Certificates:" label above its grid. */}
+          <div
+            className="flex items-baseline justify-between gap-4 pb-3 border-b"
+            style={{ borderColor: 'var(--t-hairline)' }}
           >
-            CHAPTER 05
-          </span>
-        </div>
+            <h3
+              className="font-code text-xs font-bold uppercase tracking-widest"
+              style={{ color: 'var(--t-accent-ink)' }}
+            >
+              Certifications
+            </h3>
+            <span className="font-code text-xs font-bold" style={{ color: 'var(--t-text-muted)' }}>
+              {total}
+            </span>
+          </div>
 
-        {/* Achievement List */}
-        <div className="space-y-4">
-          {PORTFOLIO_DATA.certifications.map((cert, idx) => {
-            const hasUrl = Boolean(cert.url);
-            const Component = hasUrl ? 'a' : 'div';
-            const indexCode = idx < 9 ? `0${idx + 1}` : `${idx + 1}`;
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {certifications.map((cert, idx) => {
+              const cardClass = `card shine group relative overflow-hidden flex flex-col h-full p-5${
+                cert.url ? ' cursor-pointer hover:border-[var(--t-accent-main)] hover:-translate-y-0.5' : ''
+              }`;
 
-            return (
-              <motion.div
-                key={cert.id}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.4, delay: 0.05 * idx }}
-              >
-                <Component
-                  {...(hasUrl ? { href: cert.url, target: '_blank', rel: 'noopener noreferrer' } : {})}
-                  className={`group p-5 md:p-6 rounded-lg border-[3px] border-[#11172C] shadow-[5px_5px_0px_#11172C] flex flex-col md:flex-row md:items-center justify-between gap-6 transition-all duration-300 relative overflow-hidden ${
-                    hasUrl ? 'cursor-pointer hover:translate-x-3' : ''
-                  }`}
-                  style={{ backgroundColor: 'var(--t-bg-panel)', color: 'var(--t-text-primary)' }}
-                  onMouseEnter={(e: React.MouseEvent<HTMLElement>) => {
-                    if (hasUrl) {
-                      (e.currentTarget as HTMLElement).style.borderColor = 'var(--t-accent-main)';
-                    }
-                  }}
-                  onMouseLeave={(e: React.MouseEvent<HTMLElement>) => {
-                    (e.currentTarget as HTMLElement).style.borderColor = '#11172C';
-                  }}
-                >
-                  {/* Hover glow */}
-                  <div
-                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                    style={{ background: 'linear-gradient(90deg, var(--t-aura-gold) 0%, transparent 50%, var(--t-aura-blue) 100%)' }}
-                  />
-
-                  {/* Left: Index + Emblem + Title */}
-                  <div className="flex items-center gap-5 min-w-0 relative z-10">
+              const body = (
+                <>
+                  {/* Issuer mark, standing in for the certificate image */}
+                  <div className="flex items-start justify-between gap-4 mb-6">
                     <span
-                      className="font-manga text-3xl md:text-4xl transition-colors shrink-0 font-bold group-hover:opacity-80"
-                      style={{ color: 'var(--t-accent-ink)' }}
+                      aria-hidden="true"
+                      className="inline-flex items-center justify-center w-12 h-12 rounded-xl font-display text-lg leading-none shrink-0"
+                      style={{ backgroundColor: 'var(--t-accent-main)', color: '#FFFFFF' }}
                     >
-                      {indexCode}
+                      {monogram(cert.issuer)}
                     </span>
-
-                    <div
-                      className="w-12 h-12 rounded-full border-2 flex items-center justify-center shrink-0 group-hover:scale-110 transition-all duration-300"
-                      style={{
-                        backgroundColor: 'var(--t-bg-secondary)',
-                        color: 'var(--t-accent-ink)',
-                        borderColor: 'var(--t-accent-main)',
-                        boxShadow: '2px 2px 0px #11172C',
-                      }}
-                      onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLElement).style.boxShadow = '0 0 20px var(--t-aura-gold)';
-                      }}
-                      onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLElement).style.boxShadow = '2px 2px 0px #11172C';
-                      }}
-                    >
-                      <Award className="w-6 h-6" />
-                    </div>
-
-                    <div className="space-y-1 min-w-0">
-                      <h3
-                        className="font-manga text-2xl md:text-3xl tracking-wide uppercase break-words transition-colors group-hover:opacity-80"
-                        style={{ color: 'var(--t-text-primary)' }}
-                      >
-                        {cert.title}
-                      </h3>
-                      <div className="flex items-center gap-2 font-body text-sm font-semibold" style={{ color: 'var(--t-text-secondary)' }}>
-                        <CheckCircle className="w-3.5 h-3.5" style={{ color: 'var(--t-cool-ink)' }} />
-                        <span>ISSUED BY {cert.issuer.toUpperCase()}</span>
-                      </div>
-                    </div>
+                    <CountUp
+                      to={idx + 1}
+                      pad={2}
+                      className="font-code text-xs font-bold pt-1"
+                      style={{ color: 'var(--t-text-muted)' }}
+                    />
                   </div>
 
-                  {/* Right: Date + Verify */}
-                  <div className="flex items-center justify-between md:justify-end gap-6 font-code text-xs shrink-0 relative z-10 pt-2 md:pt-0 border-t md:border-t-0" style={{ borderColor: 'var(--t-divider)' }}>
+                  <h4
+                    className="font-display text-lg uppercase leading-tight mb-2"
+                    style={{ color: 'var(--t-text-primary)' }}
+                  >
+                    {cert.title}
+                  </h4>
+
+                  <p
+                    className="font-body text-sm leading-snug mb-5"
+                    style={{ color: 'var(--t-text-secondary)' }}
+                  >
+                    {cert.issuer}
+                  </p>
+
+                  {/* Meta pinned to the bottom so the rows line up across
+                      cards with different title lengths. */}
+                  <div
+                    className="mt-auto pt-4 border-t flex items-center justify-between gap-3"
+                    style={{ borderColor: 'var(--t-hairline)' }}
+                  >
                     <span
-                      className="px-3.5 py-1.5 rounded-lg font-bold border"
-                      style={{
-                        backgroundColor: 'var(--t-bg-secondary)',
-                        color: 'var(--t-cool-ink)',
-                        borderColor: 'rgba(53,184,255,0.4)',
-                      }}
+                      className="font-code text-[11px] font-bold uppercase tracking-widest"
+                      style={{ color: 'var(--t-text-muted)' }}
                     >
-                      DATE: {cert.date}
+                      ISSUED {cert.date}
                     </span>
-                    {hasUrl && (
-                      <span className="anime-btn anime-btn-orange text-sm px-3.5 py-1.5 rounded-lg">
-                        <span>VERIFY</span>
-                        <ArrowUpRight className="w-4 h-4" />
+                    {cert.url && (
+                      <span
+                        className="inline-flex items-center gap-1 font-code text-[11px] font-bold uppercase tracking-widest transition-colors"
+                        style={{ color: 'var(--t-accent-ink)' }}
+                      >
+                        VIEW
+                        <ArrowUpRight className="w-3.5 h-3.5" />
                       </span>
                     )}
                   </div>
-                </Component>
-              </motion.div>
-            );
-          })}
+                </>
+              );
+
+              // Branched rather than picking the tag from a variable: a
+              // `'a' | 'div'` union has to satisfy both prop sets, and `div`
+              // takes no `href`.
+              return (
+                <Reveal
+                  key={cert.id}
+                  direction="up"
+                  distance={0.55}
+                  duration={0.45}
+                  delay={0.04 * idx}
+                  className="h-full"
+                >
+                  {cert.url ? (
+                    <a href={cert.url} target="_blank" rel="noopener noreferrer" className={cardClass}>
+                      {body}
+                    </a>
+                  ) : (
+                    <div className={cardClass}>{body}</div>
+                  )}
+                </Reveal>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

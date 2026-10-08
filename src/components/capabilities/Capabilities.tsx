@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { KanjiEmblem } from '../ui/AnimePrimitives';
+import { ChapterHeader } from '../ui/ChapterHeader';
+import { StaggerGroup, StaggerItem } from '../ui/motion';
 
 export const Capabilities = () => {
   const categories = [
@@ -15,43 +16,17 @@ export const Capabilities = () => {
   return (
     <section
       id="skills"
-      className="relative py-24 md:py-36 border-b-[4px] overflow-hidden bg-halftone select-none transition-colors duration-500"
+      className="relative py-24 md:py-36 border-b overflow-hidden select-none transition-colors duration-500"
       style={{
         backgroundColor: 'var(--t-bg-secondary)',
         color: 'var(--t-text-primary)',
-        borderColor: 'var(--t-bg-secondary)',
+        borderColor: 'var(--t-hairline)',
       }}
     >
-      <div className="section-anime relative z-10 space-y-16">
-        {/* Chapter Header */}
-        <div
-          className="flex items-center justify-between border-b-[4px] pb-6"
-          style={{ borderColor: 'var(--t-divider)' }}
-        >
-          <div className="flex items-center gap-4">
-            <KanjiEmblem symbol="術" size="md" className="shadow-[4px_4px_0px_#11172C]" />
-            <div>
-              <span className="font-code text-xs font-bold tracking-widest uppercase" style={{ color: 'var(--t-cool-ink)' }}>
-                [ TRAINING ARC ]
-              </span>
-              <h2
-                className="font-manga text-5xl md:text-7xl tracking-wide uppercase leading-none mt-1"
-                style={{ color: 'var(--t-text-primary)' }}
-              >
-                02 / SKILLS
-              </h2>
-            </div>
-          </div>
-          <span
-            className="hidden sm:inline-block px-4 py-1.5 font-manga text-base border-2 border-[#11172C] shadow-[3px_3px_0px_#11172C] rounded-lg uppercase"
-            style={{ backgroundColor: 'var(--t-accent-main)', color: '#11172C' }}
-          >
-            CHAPTER 02
-          </span>
-        </div>
+      <div className="shell relative z-10 space-y-16">
+        <ChapterHeader index="02" label="SKILLS" eyebrow="TECHNICAL SKILLS" badge="02 / 06" tone="cool" />
 
-        {/* Technique List */}
-        <div className="space-y-0 divide-y-[3px] divide-[var(--t-divider)]">
+        <div className="border-t" style={{ borderColor: 'var(--t-hairline)' }}>
           {categories.map((cat, idx) => (
             <motion.div
               key={cat.title}
@@ -59,52 +34,56 @@ export const Capabilities = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.04 * idx }}
-              className="group py-8 md:py-10 grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-center cursor-default px-4 rounded-lg relative transition-all duration-300"
-              style={{ '--hover-bg': 'var(--t-bg-panel)' } as React.CSSProperties}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--t-bg-panel)')}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+              className="group relative grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-center px-4 py-8 md:py-10 border-b transition-colors duration-300 hover:bg-[var(--t-bg-panel)]"
+              style={{ borderColor: 'var(--t-hairline)' }}
             >
-              {/* Hover aura border */}
+              {/* Hover aura edge */}
               <div
-                className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none border-2"
-                style={{ borderColor: 'var(--t-accent-cool)', boxShadow: `0 0 40px var(--t-aura-blue)` }}
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none border-y"
+                style={{ borderColor: 'var(--t-accent-cool)', boxShadow: '0 0 40px var(--t-aura-blue)' }}
               />
 
-              {/* Number & Category */}
-              <div className="md:col-span-4 flex items-center gap-4 relative z-10">
-                <span
-                  className="font-manga text-3xl md:text-4xl shrink-0 transition-colors"
-                  style={{ color: 'var(--t-accent-ink)' }}
-                >
+              {/* Charge bar — an overlay, so it adds no layout height.
+                  Decorative only: it deliberately carries no proficiency value,
+                  which would imply a metric that was never provided. */}
+              <div className="absolute bottom-0 left-4 right-4 h-px overflow-hidden pointer-events-none">
+                <motion.div
+                  className="h-full origin-left"
+                  style={{ background: 'linear-gradient(90deg, var(--t-accent-cool), var(--t-accent-main))' }}
+                  initial={{ scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ duration: 0.9, delay: 0.05 * idx, ease: 'easeOut' }}
+                />
+              </div>
+
+              <div className="md:col-span-4 flex items-baseline gap-4 relative z-10">
+                <span className="font-code text-sm font-bold shrink-0" style={{ color: 'var(--t-accent-ink)' }}>
                   {cat.code}
                 </span>
                 <h3
-                  className="font-manga text-3xl md:text-5xl tracking-wide uppercase transition-colors"
+                  className="font-display text-3xl md:text-4xl uppercase leading-none"
                   style={{ color: 'var(--t-text-primary)' }}
                 >
                   {cat.title}
                 </h3>
               </div>
 
-              {/* Skills */}
-              <div className="md:col-span-8 flex flex-wrap items-center gap-3 relative z-10">
-                {cat.skills.map((skill, sIdx) => (
-                  <span key={skill} className="inline-flex items-center gap-3">
-                    <span
-                      className="px-4 py-2 rounded-lg font-manga text-xl border-[3px] border-[var(--t-chapter-border)] shadow-[3px_3px_0px_#11172C] group-hover:scale-[1.03] transition-all duration-200"
-                      style={{
-                        backgroundColor: 'var(--t-card-bg)',
-                        color: 'var(--t-card-text)',
-                      }}
-                    >
-                      {skill}
-                    </span>
-                    {sIdx < cat.skills.length - 1 && (
-                      <span className="font-manga text-2xl select-none" style={{ color: 'var(--t-accent-ink)' }}>·</span>
-                    )}
-                  </span>
+              <StaggerGroup className="md:col-span-8 flex flex-wrap items-center gap-2 relative z-10" stagger={0.045}>
+                {cat.skills.map((skill) => (
+                  <StaggerItem
+                    key={skill}
+                    className="px-3.5 py-1.5 rounded-full border font-body text-sm font-medium transition-colors duration-200 group-hover:border-[var(--t-accent-cool)]"
+                    style={{
+                      borderColor: 'var(--t-hairline)',
+                      backgroundColor: 'var(--t-card-bg)',
+                      color: 'var(--t-card-text)',
+                    }}
+                  >
+                    {skill}
+                  </StaggerItem>
                 ))}
-              </div>
+              </StaggerGroup>
             </motion.div>
           ))}
         </div>

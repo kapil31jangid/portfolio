@@ -1,166 +1,191 @@
+import { useRef } from 'react';
 import { PORTFOLIO_DATA } from '../../data/portfolio';
-import { PowerToggle } from '../ui/PowerToggle';
+import { ThemeToggle } from '../ui/ThemeToggle';
 import { GithubIcon, LinkedinIcon } from '../ui/Icons';
-import { ArrowDownRight, FileText, MapPin, Sparkles } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { AnimeMountainScenery, KanjiEmblem } from '../ui/AnimePrimitives';
+import { ArrowDownRight, FileText, MapPin } from 'lucide-react';
+import { motion, useReducedMotion, useTransform } from 'framer-motion';
+import { AssembleHeading, Magnetic, OrbitRing, Typewriter, usePointerParallax } from '../ui/motion';
+
+/** When the split flourish fires — after the last character of JANGID lands. */
+const SPLIT_DELAY = 1;
+
+/** How far the two lines travel apart at the peak of the split. */
+const SPLIT_DISTANCE = 40;
 
 export const Hero = () => {
   const p = PORTFOLIO_DATA.personal;
+  const prefersReduced = useReducedMotion();
+
+  // A single pointer tracker for the hero; the ring drifts against it so the
+  // composition reads as having depth. Kept to the ring — the wordmark itself
+  // stays locked, since moving type is harder to read than moving decoration.
+  const heroRef = useRef<HTMLElement>(null);
+  const { x: pointerX, y: pointerY } = usePointerParallax(heroRef);
+  const ringX = useTransform(pointerX, [-1, 1], [-18, 18]);
+  const ringY = useTransform(pointerY, [-1, 1], [-14, 14]);
 
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex flex-col justify-between pt-16 pb-8 overflow-hidden bg-halftone select-none transition-colors duration-500"
-      style={{ backgroundColor: 'var(--t-hero-bg)', color: 'var(--t-text-primary)' }}
+      ref={heroRef}
+      className="bg-dots relative min-h-screen flex flex-col justify-center overflow-hidden select-none pt-28 pb-20 transition-colors duration-500"
+      style={{ backgroundColor: 'var(--t-bg-primary)', color: 'var(--t-text-primary)' }}
     >
-      <div className="hero-speed-lines" aria-hidden="true" />
+      <div className="shell relative z-10">
+        <div className="flex flex-col items-center text-center">
 
-      {/* ──── FOREGROUND ──── */}
-      <div className="section-anime relative z-10 my-auto pt-16 pb-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 items-center min-h-[75vh]">
-
-          {/* ═══ LEFT: TYPOGRAPHY + CTAs ═══ */}
-          <div className="lg:col-span-7 space-y-7 relative z-20">
-
-            {/* Badge row */}
-            <motion.div
-              initial={{ opacity: 0, y: -15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="flex flex-wrap items-center gap-3"
+          {/* ── STATUS RAIL ── */}
+          <motion.div
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-wrap items-center justify-center gap-3"
+          >
+            <ThemeToggle />
+            <span
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full border font-code text-[11px] font-bold uppercase tracking-widest"
+              style={{ borderColor: 'var(--t-hairline)', color: 'var(--t-text-secondary)' }}
             >
-              <PowerToggle />
-              <KanjiEmblem symbol="悟" size="sm" className="shadow-[3px_3px_0px_#11172C]" />
+              <MapPin className="w-3.5 h-3.5" style={{ color: 'var(--t-accent-main)' }} />
+              {p.location}
+            </span>
+            <span
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full border font-code text-[11px] font-bold uppercase tracking-widest"
+              style={{ borderColor: 'var(--t-hairline)', color: 'var(--t-text-secondary)' }}
+            >
+              <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--t-accent-main)' }} />
+              ROLE: {p.positioning.toUpperCase()}
+            </span>
+          </motion.div>
 
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-xl bg-[#F47B20] text-[#11172C] border-[3px] border-[#11172C] shadow-[4px_4px_0px_#11172C]">
-                <Sparkles className="w-4 h-4 text-[#11172C]" />
-                <span className="font-manga text-sm tracking-wider uppercase">CURRENT FORM:</span>
-                <span className="font-manga text-sm text-[#11172C] tracking-wider uppercase">
-                  AI-DRIVEN FULL STACK DEVELOPER
-                </span>
-              </div>
-
-              <div className="inline-flex items-center gap-1.5 font-code text-xs font-bold text-[#35B8FF] bg-[#0A1022] px-3.5 py-1.5 rounded-lg border-2 border-[#11172C]">
-                <MapPin className="w-3.5 h-3.5 text-[#F47B20]" />
-                <span>{p.location}</span>
-              </div>
+          {/* ── WORDMARK ── */}
+          <div className="relative w-full mt-12 sm:mt-16">
+            {/* The orbit ring reads as the mark's halo. Sized off the viewport
+                so it stays an ellipse rather than collapsing on narrow screens. */}
+            <motion.div
+              aria-hidden="true"
+              className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(86vw,600px)] aspect-square -z-10"
+              style={{ x: ringX, y: ringY }}
+            >
+              <OrbitRing duration={18} tilt={74} />
             </motion.div>
 
-            {/* KAPIL / JANGID — colors driven by CSS vars */}
-            <div className="space-y-1 relative">
-              <motion.h1
-                initial={{ opacity: 0, y: 40, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                className="font-manga text-7xl sm:text-8xl md:text-9xl xl:text-[130px] leading-[0.85] tracking-wider uppercase select-none"
+            {/* Panel growing outward from the centre (ref #5), scoped to the
+                wordmark rather than the viewport so it never blocks the page. */}
+            <motion.span
+              aria-hidden="true"
+              className="absolute left-0 right-0 rounded-3xl pointer-events-none"
+              style={{
+                top: '14%',
+                bottom: '14%',
+                background: 'var(--t-accent-main)',
+                opacity: 0.06,
+                transformOrigin: 'center',
+              }}
+              initial={{ scaleX: prefersReduced ? 1 : 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            />
+
+            <h1 className="relative font-display text-[19vw] sm:text-8xl md:text-9xl xl:text-[150px] leading-[0.82] uppercase">
+              {/* The two halves slide apart at the peak of the flourish, then
+                  snap back — the reference's split (ref #4), played once on
+                  entry rather than on every section change. The return leg uses
+                  `backOut` so the halves overshoot slightly into place, which is
+                  what makes them read as one mark reforming. */}
+              <motion.span
+                className="block"
+                style={{ color: 'var(--t-heading)' }}
+                animate={prefersReduced ? undefined : { y: [0, -SPLIT_DISTANCE, 0] }}
+                transition={
+                  prefersReduced
+                    ? undefined
+                    : { delay: SPLIT_DELAY, duration: 0.85, times: [0, 0.4, 1], ease: ['easeOut', 'backOut'] }
+                }
               >
-                <span
-                  className="block manga-stroke-navy drop-shadow-[7px_7px_0px_#11172C] transition-colors duration-500"
-                  style={{ color: 'var(--t-hero-kapil)' }}
-                >
-                  KAPIL
-                </span>
-                <span
-                  className="block manga-stroke-navy drop-shadow-[7px_7px_0px_#11172C] transition-colors duration-500"
-                  style={{ color: 'var(--t-hero-jangid)' }}
-                >
-                  JANGID
-                </span>
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.35 }}
-                className="font-manga text-2xl sm:text-4xl tracking-wide uppercase pt-2 transition-colors duration-500"
-                style={{ color: 'var(--t-hero-role)' }}
+                <AssembleHeading text="KAPIL" trigger="mount" stagger={0.055} delay={0.15} distance={0.7} />
+              </motion.span>
+              <motion.span
+                className="block"
+                style={{ color: 'var(--t-accent-main)' }}
+                animate={prefersReduced ? undefined : { y: [0, SPLIT_DISTANCE, 0] }}
+                transition={
+                  prefersReduced
+                    ? undefined
+                    : { delay: SPLIT_DELAY, duration: 0.85, times: [0, 0.4, 1], ease: ['easeOut', 'backOut'] }
+                }
               >
-                AI-DRIVEN FULL STACK DEVELOPER
-              </motion.p>
-            </div>
-
-            {/* Editorial caption */}
-            <motion.p
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.45 }}
-              className="font-body text-lg md:text-xl font-medium max-w-lg leading-relaxed pl-4 border-l-[3px] border-[#F47B20] transition-colors duration-500"
-              style={{ color: 'var(--t-hero-caption)' }}
-            >
-              I build intelligent products across AI, backend systems and the web.
-            </motion.p>
-
-            {/* CTAs */}
-            <motion.div
-              initial={{ opacity: 0, y: 25 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="pt-2 flex flex-wrap items-center gap-4 sm:gap-6"
-            >
-              <a href="#work" className="anime-btn anime-btn-orange">
-                <span>EXPLORE WORK</span>
-                <ArrowDownRight className="w-5 h-5 group-hover:translate-x-1 group-hover:translate-y-1 transition-transform" />
-              </a>
-
-              <a
-                href={p.resumeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="anime-btn anime-btn-cream text-lg"
-              >
-                <FileText className="w-5 h-5 text-[#F47B20]" />
-                <span>RESUME</span>
-              </a>
-
-              <div className="flex items-center gap-3 pl-2 sm:pl-4 border-l-2 border-[#FFF1CF]/20">
-                <a
-                  href={p.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="GitHub Profile"
-                  className="p-3.5 rounded-xl bg-[#0A1022] text-[#FFD447] border-[3px] border-[#11172C] shadow-[3px_3px_0px_#11172C] hover:scale-105 transition-all flex items-center gap-2 font-manga text-base"
-                >
-                  <GithubIcon className="w-5 h-5" />
-                  <span className="hidden sm:inline">GITHUB</span>
-                </a>
-                <a
-                  href={p.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="LinkedIn Profile"
-                  className="p-3.5 rounded-xl bg-[#0A1022] text-[#35B8FF] border-[3px] border-[#11172C] shadow-[3px_3px_0px_#11172C] hover:scale-105 transition-all flex items-center gap-2 font-manga text-base"
-                >
-                  <LinkedinIcon className="w-5 h-5" />
-                  <span className="hidden sm:inline">LINKEDIN</span>
-                </a>
-              </div>
-            </motion.div>
+                <AssembleHeading text="JANGID" trigger="mount" stagger={0.055} delay={0.3} distance={0.7} />
+              </motion.span>
+            </h1>
           </div>
 
-          {/* ═══ RIGHT: CHARACTER ═══ */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.88, y: 30 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5 flex justify-center lg:justify-end relative lg:-ml-20 lg:-mr-6 mt-8 lg:mt-0 z-10"
+          {/* ── ROLE LINE ── */}
+          <p
+            className="font-code text-sm sm:text-base md:text-lg font-bold uppercase tracking-[0.22em] mt-10"
+            style={{ color: 'var(--t-text-secondary)' }}
           >
-            <div className="hero-character">
-              <div className="character-energy" aria-hidden="true" />
-              <img
-                src="/hero_character.jpg"
-                alt="Dragon Ball-inspired martial artist with an electric aura"
-                width="896"
-                height="1200"
-                fetchPriority="high"
-                className="character-image"
-              />
-            </div>
+            <Typewriter text="AI-DRIVEN FULL STACK DEVELOPER" trigger="mount" startDelay={700} speed={38} />
+          </p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 1.5 }}
+            className="font-body text-lg md:text-xl font-medium max-w-xl leading-relaxed mt-6"
+            style={{ color: 'var(--t-text-secondary)' }}
+          >
+            I build intelligent products across AI, backend systems and the web.
+          </motion.p>
+
+          {/* ── CTAs ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 22 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1.65 }}
+            className="flex flex-wrap items-center justify-center gap-4 mt-10"
+          >
+            <Magnetic>
+              <a href="#work" className="btn btn-primary group">
+                <span>EXPLORE WORK</span>
+                <ArrowDownRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-transform" />
+              </a>
+            </Magnetic>
+
+            <Magnetic>
+              <a href={p.resumeUrl} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
+                <FileText className="w-4 h-4" />
+                <span>RESUME</span>
+              </a>
+            </Magnetic>
+
+            <span className="hidden sm:block w-px h-6" style={{ background: 'var(--t-hairline)' }} />
+
+            <a
+              href={p.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub Profile"
+              className="inline-flex items-center gap-2 font-code text-xs font-bold uppercase tracking-widest transition-colors"
+              style={{ color: 'var(--t-text-secondary)' }}
+            >
+              <GithubIcon className="w-4 h-4" />
+              GITHUB
+            </a>
+            <a
+              href={p.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn Profile"
+              className="inline-flex items-center gap-2 font-code text-xs font-bold uppercase tracking-widest transition-colors"
+              style={{ color: 'var(--t-text-secondary)' }}
+            >
+              <LinkedinIcon className="w-4 h-4" />
+              LINKEDIN
+            </a>
           </motion.div>
         </div>
       </div>
-
-      <AnimeMountainScenery className="relative z-10 -mb-8" />
     </section>
   );
 };

@@ -4,11 +4,10 @@ import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion
 import { ChapterHeader } from '../ui/ChapterHeader';
 import { OrbitRing, Reveal, StaggerGroup, StaggerItem, ScrollVelocity } from '../ui/motion';
 import { Award, GraduationCap, Users } from 'lucide-react';
-
-/** Where the rail line sits, and therefore where the markers centre on it. */
-const RAIL_LEFT = 19;
+import { motionTokens } from '../../lib/motion-tokens';
 
 export const Journey = () => {
+  const { railLeft, scrollOffsetStart, scrollOffsetEnd, markerTopStart, markerTopEnd, lineGrowDuration, lineEase, markerSpringStiffness, markerSpringDamping, milestoneDelay, staggerDelay } = motionTokens.journey;
   const timelineRef = useRef<HTMLDivElement>(null);
   const prefersReduced = useReducedMotion();
 
@@ -16,9 +15,9 @@ export const Journey = () => {
   // Ranges are inset from 0/100% so it starts and finishes inside the line.
   const { scrollYProgress } = useScroll({
     target: timelineRef,
-    offset: ['start 85%', 'end 45%'],
+    offset: [scrollOffsetStart, scrollOffsetEnd],
   });
-  const markerTop = useTransform(scrollYProgress, [0, 1], ['4%', '96%']);
+  const markerTop = useTransform(scrollYProgress, [0, 1], [markerTopStart, markerTopEnd]);
 
   const milestones = [
     {
@@ -73,7 +72,7 @@ export const Journey = () => {
               Hidden below `lg`, where there is no room to pin anything. */}
           <aside aria-hidden="true" className="hidden lg:flex lg:col-span-4 justify-center">
             <div className="sticky top-32 w-full max-w-[320px] aspect-square">
-              <OrbitRing duration={22} tilt={70} />
+              <OrbitRing duration={motionTokens.orbit.journeyDuration} tilt={motionTokens.orbit.journeyTilt} />
 
               {/* Concentric rings, so the mark reads as a radar sweep. */}
               <span
@@ -95,13 +94,13 @@ export const Journey = () => {
           <div ref={timelineRef} className="lg:col-span-8 relative">
             <div
               className="absolute top-2 bottom-2 w-px pointer-events-none"
-              style={{ left: RAIL_LEFT, backgroundColor: 'var(--t-hairline)' }}
+              style={{ left: railLeft, backgroundColor: 'var(--t-hairline)' }}
             >
               <motion.div
                 initial={{ height: '0%' }}
                 whileInView={{ height: '100%' }}
                 viewport={{ once: true }}
-                transition={{ duration: 1.8, ease: 'easeOut' }}
+                transition={{ duration: lineGrowDuration, ease: lineEase }}
                 className="w-full"
                 style={{ background: 'linear-gradient(180deg, var(--t-accent-cool), var(--t-accent-main))' }}
               />
@@ -133,7 +132,7 @@ export const Journey = () => {
                     key={m.title}
                     direction="up"
                     distance={1}
-                    delay={0.08 * idx}
+                    delay={milestoneDelay * idx}
                     className="relative pl-14"
                   >
                     {/* Numbered marker, centred on the rail line */}
@@ -141,7 +140,7 @@ export const Journey = () => {
                       initial={{ scale: 0.4, opacity: 0 }}
                       whileInView={{ scale: 1, opacity: 1 }}
                       viewport={{ once: true, margin: '-50px' }}
-                      transition={{ type: 'spring', stiffness: 400, damping: 22, delay: 0.1 * idx }}
+                      transition={{ type: 'spring', stiffness: markerSpringStiffness, damping: markerSpringDamping, delay: staggerDelay * idx }}
                       className="absolute top-7 w-10 h-10 rounded-full border flex items-center justify-center font-code text-[11px] font-bold z-10"
                       style={{
                         left: 0,

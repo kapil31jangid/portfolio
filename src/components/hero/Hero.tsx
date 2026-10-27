@@ -5,12 +5,9 @@ import { GithubIcon, LinkedinIcon } from '../ui/Icons';
 import { ArrowDownRight, FileText, MapPin } from 'lucide-react';
 import { motion, useReducedMotion, useTransform } from 'framer-motion';
 import { AssembleHeading, Magnetic, OrbitRing, Typewriter, usePointerParallax } from '../ui/motion';
+import { motionTokens } from '../../lib/motion-tokens';
 
-/** When the split flourish fires — after the last character of JANGID lands. */
-const SPLIT_DELAY = 1;
-
-/** How far the two lines travel apart at the peak of the split. */
-const SPLIT_DISTANCE = 40;
+const { splitDelay, splitDistance, splitDuration, splitEaseOut, splitEaseBack, panelGrowDuration, panelEase, roleTypewriterDelay, roleTypewriterSpeed, ctaDelay } = motionTokens.hero;
 
 export const Hero = () => {
   const p = PORTFOLIO_DATA.personal;
@@ -67,7 +64,7 @@ export const Hero = () => {
               className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(86vw,600px)] aspect-square -z-10"
               style={{ x: ringX, y: ringY }}
             >
-              <OrbitRing duration={18} tilt={74} />
+              <OrbitRing duration={motionTokens.orbit.heroDuration} tilt={motionTokens.orbit.heroTilt} />
             </motion.div>
 
             {/* Panel growing outward from the centre (ref #5), scoped to the
@@ -84,7 +81,7 @@ export const Hero = () => {
               }}
               initial={{ scaleX: prefersReduced ? 1 : 0 }}
               animate={{ scaleX: 1 }}
-              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: panelGrowDuration, ease: panelEase }}
             />
 
             <h1 className="relative font-display text-[19vw] sm:text-8xl md:text-9xl xl:text-[150px] leading-[0.82] uppercase">
@@ -96,11 +93,11 @@ export const Hero = () => {
               <motion.span
                 className="block"
                 style={{ color: 'var(--t-heading)' }}
-                animate={prefersReduced ? undefined : { y: [0, -SPLIT_DISTANCE, 0] }}
+                animate={prefersReduced ? undefined : { y: [0, -splitDistance, 0] }}
                 transition={
                   prefersReduced
                     ? undefined
-                    : { delay: SPLIT_DELAY, duration: 0.85, times: [0, 0.4, 1], ease: ['easeOut', 'backOut'] }
+                    : { delay: splitDelay, duration: splitDuration, times: [0, 0.4, 1], ease: [splitEaseOut, splitEaseBack] }
                 }
               >
                 <AssembleHeading text="KAPIL" trigger="mount" stagger={0.055} delay={0.15} distance={0.7} />
@@ -108,11 +105,11 @@ export const Hero = () => {
               <motion.span
                 className="block"
                 style={{ color: 'var(--t-accent-main)' }}
-                animate={prefersReduced ? undefined : { y: [0, SPLIT_DISTANCE, 0] }}
+                animate={prefersReduced ? undefined : { y: [0, splitDistance, 0] }}
                 transition={
                   prefersReduced
                     ? undefined
-                    : { delay: SPLIT_DELAY, duration: 0.85, times: [0, 0.4, 1], ease: ['easeOut', 'backOut'] }
+                    : { delay: splitDelay, duration: splitDuration, times: [0, 0.4, 1], ease: [splitEaseOut, splitEaseBack] }
                 }
               >
                 <AssembleHeading text="JANGID" trigger="mount" stagger={0.055} delay={0.3} distance={0.7} />
@@ -125,7 +122,7 @@ export const Hero = () => {
                       className="font-code text-sm sm:text-base md:text-lg font-bold uppercase tracking-[0.22em] mt-6"
             style={{ color: 'var(--t-text-secondary)' }}
           >
-            <Typewriter text="AI-DRIVEN FULL STACK DEVELOPER" trigger="mount" startDelay={700} speed={38} />
+            <Typewriter text="AI-DRIVEN FULL STACK DEVELOPER" trigger="mount" startDelay={roleTypewriterDelay} speed={roleTypewriterSpeed} />
           </p>
 
           <motion.p
@@ -142,7 +139,7 @@ export const Hero = () => {
           <motion.div
             initial={{ opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.65 }}
+            transition={{ duration: 0.6, delay: ctaDelay }}
                       className="flex flex-wrap items-center justify-center gap-4 mt-6"
           >
             <Magnetic>

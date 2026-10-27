@@ -1,18 +1,9 @@
 import { motion } from 'framer-motion';
+import { PORTFOLIO_DATA } from '../../data/portfolio';
 import { ChapterHeader } from '../ui/ChapterHeader';
 import { StaggerGroup, StaggerItem } from '../ui/motion';
 
 export const Capabilities = () => {
-  const categories = [
-    { code: '01', title: 'AI / ML',    skills: ['LLMs', 'RAG', 'AI Agents', 'Prompt Engineering', 'ML Fundamentals'] },
-    { code: '02', title: 'BACKEND',    skills: ['FastAPI', 'REST APIs', 'Node.js', 'Express'] },
-    { code: '03', title: 'DATABASES',  skills: ['PostgreSQL', 'Supabase', 'Neon', 'SQL'] },
-    { code: '04', title: 'CLOUD',      skills: ['Google Cloud Platform', 'Cloud Run', 'AWS', 'AWS Amplify', 'Docker'] },
-    { code: '05', title: 'LANGUAGES',  skills: ['Python', 'C', 'C++', 'SQL', 'HTML', 'CSS'] },
-    { code: '06', title: 'CORE CS',    skills: ['DSA', 'OOP', 'DBMS', 'System Design'] },
-    { code: '07', title: 'TOOLS',      skills: ['Git', 'GitHub', 'VS Code', 'Linux'] },
-  ] as const;
-
   return (
     <section
       id="skills"
@@ -27,7 +18,7 @@ export const Capabilities = () => {
         <ChapterHeader index="02" label="SKILLS" eyebrow="TECHNICAL SKILLS" badge="02 / 06" tone="cool" />
 
         <div className="border-t" style={{ borderColor: 'var(--t-hairline)' }}>
-          {categories.map((cat, idx) => (
+          {PORTFOLIO_DATA.skillCategories.map((cat, idx) => (
             <motion.div
               key={cat.title}
               initial={{ opacity: 0, y: 20 }}
@@ -56,7 +47,7 @@ export const Capabilities = () => {
 
               <div className="md:col-span-4 flex items-baseline gap-4 relative z-10">
                 <span className="font-code text-sm font-bold shrink-0" style={{ color: 'var(--t-accent-ink)' }}>
-                  {cat.code}
+                  {String(idx + 1).padStart(2, '0')}
                 </span>
                 <h3
                   className="font-display text-3xl md:text-4xl uppercase leading-none group-hover:text-[var(--t-accent-main)] transition-colors"

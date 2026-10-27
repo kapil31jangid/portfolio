@@ -1,15 +1,10 @@
 import { motion } from 'framer-motion';
 import type { CSSProperties, ReactNode } from 'react';
+import { motionTokens } from '../../../lib/motion-tokens';
 
 type Direction = 'up' | 'down' | 'left' | 'right' | 'none';
 
-const OFFSETS: Record<Direction, { x: number; y: number }> = {
-  up: { x: 0, y: 28 },
-  down: { x: 0, y: -28 },
-  left: { x: 32, y: 0 },
-  right: { x: -32, y: 0 },
-  none: { x: 0, y: 0 },
-};
+const OFFSETS: Record<Direction, { x: number; y: number }> = motionTokens.reveal.offsets;
 
 export interface RevealProps {
   children: ReactNode;
@@ -30,9 +25,9 @@ export interface RevealProps {
 export function Reveal({
   children,
   direction = 'up',
-  delay = 0,
-  duration = 0.6,
-  distance = 1,
+  delay = motionTokens.reveal.defaultDelay,
+  duration = motionTokens.reveal.defaultDuration,
+  distance = motionTokens.reveal.defaultDistance,
   className,
   style,
   once = true,
@@ -45,8 +40,8 @@ export function Reveal({
       style={style}
       initial={{ opacity: 0, x: offset.x * distance, y: offset.y * distance }}
       whileInView={{ opacity: 1, x: 0, y: 0 }}
-      viewport={{ once, margin: '-60px' }}
-      transition={{ duration, delay, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once, margin: motionTokens.reveal.viewportMargin }}
+      transition={{ duration, delay, ease: motionTokens.reveal.defaultEase }}
     >
       {children}
     </motion.div>
@@ -71,8 +66,8 @@ export function StaggerGroup({
   children,
   className,
   style,
-  stagger = 0.05,
-  delay = 0.05,
+  stagger = motionTokens.stagger.groupStagger,
+  delay = motionTokens.stagger.groupDelay,
   once = true,
 }: StaggerGroupProps) {
   return (
@@ -81,7 +76,7 @@ export function StaggerGroup({
       style={style}
       initial="hidden"
       whileInView="show"
-      viewport={{ once, margin: '-60px' }}
+      viewport={{ once, margin: motionTokens.reveal.viewportMargin }}
       variants={{
         hidden: {},
         show: { transition: { staggerChildren: stagger, delayChildren: delay } },
@@ -109,12 +104,10 @@ export function StaggerItem({ children, className, style }: StaggerItemProps) {
       className={className}
       style={style}
       variants={{
-        hidden: { opacity: 0, y: 18, scale: 0.94 },
+        hidden: motionTokens.stagger.itemHidden,
         show: {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          transition: { type: 'spring', stiffness: 380, damping: 30, mass: 0.7 },
+          ...motionTokens.stagger.itemShow,
+          transition: motionTokens.stagger.itemSpring,
         },
       }}
     >

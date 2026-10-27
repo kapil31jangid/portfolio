@@ -1,6 +1,6 @@
 import { PORTFOLIO_DATA } from '../../data/portfolio';
 import { ChapterHeader } from '../ui/ChapterHeader';
-import { Reveal, TiltCard, Magnetic, ClickBurst } from '../ui/motion';
+import { Reveal, TiltCard, ClickBurst } from '../ui/motion';
 import { ExternalLink, AlertTriangle, Lightbulb } from 'lucide-react';
 import { GithubIcon } from '../ui/Icons';
 import { useState, Suspense, lazy } from 'react';
@@ -49,41 +49,39 @@ export const SelectedWork = () => {
                 <Reveal duration={0.7} distance={1.4}>
                   <TiltCard intensity={4} spotlight={false}>
                     <ClickBurst theme="accent" maxRadius={180} rings={4} particleCount={16} disabled={false}>
-                      <Magnetic strength={0.15}>
-                        <>
-                          <Suspense fallback={
-                            <div className="flex items-center justify-center min-h-[440px] bg-[var(--t-bg-secondary)]">
-                              <div className="font-code text-[11px] font-bold uppercase tracking-widest" style={{ color: 'var(--t-text-muted)' }}>Loading visual…</div>
-                            </div>
-                          }>
-                            {project.id === 'stocklytics-ai' ? <StocklyticsVisual /> : <VendorBridgeVisual />}
-                          </Suspense>
-                          <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            whileHover={{ opacity: 1, scale: 1 }}
-                            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                            className="absolute inset-0 bg-white/90 backdrop-blur-md flex flex-col items-center justify-center gap-4 opacity-0 pointer-events-none group-hover:pointer-events-auto"
+                      <>
+                        <Suspense fallback={
+                          <div className="flex items-center justify-center min-h-[440px] bg-[var(--t-bg-secondary)]">
+                            <div className="font-code text-[11px] font-bold uppercase tracking-widest" style={{ color: 'var(--t-text-muted)' }}>Loading visual…</div>
+                          </div>
+                        }>
+                          {project.id === 'stocklytics-ai' ? <StocklyticsVisual /> : <VendorBridgeVisual />}
+                        </Suspense>
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          whileHover={{ opacity: 1, scale: 1 }}
+                          transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                          className="absolute inset-0 bg-white/90 backdrop-blur-md flex flex-col items-center justify-center gap-4 opacity-0 pointer-events-none group-hover:pointer-events-auto"
+                        >
+                          {project.githubUrl && (
+                            <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 border-4 border-black bg-white font-code text-[11px] font-bold uppercase" style={{ color: 'var(--t-text-primary)', boxShadow: '0 4px 0 #000000' }}>
+                              <GithubIcon className="w-3.5 h-3.5" /> VIEW CODE
+                            </a>
+                          )}
+                          {project.liveUrl && (
+                            <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 border-4 border-black bg-white font-code text-[11px] font-bold uppercase" style={{ color: 'var(--t-text-primary)', boxShadow: '0 4px 0 #000000' }}>
+                              <ExternalLink className="w-3.5 h-3.5" /> LIVE DEMO
+                            </a>
+                          )}
+                          <button
+                            onClick={() => setOpenCaseStudy(project.id)}
+                            className="flex items-center gap-2 px-4 py-2 border-4 border-black bg-white font-code text-[11px] font-bold uppercase"
+                            style={{ color: 'var(--t-accent-main)', boxShadow: '0 4px 0 #000000' }}
                           >
-                            {project.githubUrl && (
-                              <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 border-4 border-black bg-white font-code text-[11px] font-bold uppercase" style={{ color: 'var(--t-text-primary)', boxShadow: '0 4px 0 #000000' }}>
-                                <GithubIcon className="w-3.5 h-3.5" /> VIEW CODE
-                              </a>
-                            )}
-                            {project.liveUrl && (
-                              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 border-4 border-black bg-white font-code text-[11px] font-bold uppercase" style={{ color: 'var(--t-text-primary)', boxShadow: '0 4px 0 #000000' }}>
-                                <ExternalLink className="w-3.5 h-3.5" /> LIVE DEMO
-                              </a>
-                            )}
-                            <button
-                              onClick={() => setOpenCaseStudy(project.id)}
-                              className="flex items-center gap-2 px-4 py-2 border-4 border-black bg-white font-code text-[11px] font-bold uppercase"
-                              style={{ color: 'var(--t-accent-main)', boxShadow: '0 4px 0 #000000' }}
-                            >
-                              <ExternalLink className="w-3.5 h-3.5" /> CASE STUDY
-                            </button>
-                          </motion.div>
-                        </>
-                      </Magnetic>
+                            <ExternalLink className="w-3.5 h-3.5" /> CASE STUDY
+                          </button>
+                        </motion.div>
+                      </>
                     </ClickBurst>
                   </TiltCard>
                 </Reveal>

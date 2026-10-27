@@ -3,7 +3,6 @@ import { SkipperProvider } from './lib/skipper-ui';
 import { AnimasterProvider } from './lib/animaster-lab';
 import { ThreeUIProvider } from './lib/threeui';
 import { FloatingNavbar } from './components/navigation/FloatingNavbar';
-import { SpiderAssistant } from './components/ui/SpiderAssistant';
 import { Hero } from './components/hero/Hero';
 import { About } from './components/about/About';
 import { SelectedWork } from './components/work/SelectedWork';
@@ -51,7 +50,6 @@ export function App() {
                 if ((e.target as HTMLElement).closest('button, a')) playClick();
               }}
             >
-              <SpiderAssistant />
               {/* Skip to main content accessibility link */}
               <a
                 href="#main-content"

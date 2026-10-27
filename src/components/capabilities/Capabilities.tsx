@@ -16,14 +16,14 @@ export const Capabilities = () => {
   return (
     <section
       id="skills"
-      className="relative py-24 md:py-36 border-b overflow-hidden select-none transition-colors duration-500"
+      className="relative py-16 md:py-24 border-b overflow-hidden select-none transition-colors duration-500"
       style={{
         backgroundColor: 'var(--t-bg-secondary)',
         color: 'var(--t-text-primary)',
         borderColor: 'var(--t-hairline)',
       }}
     >
-      <div className="shell relative z-10 space-y-16">
+      <div className="shell relative z-10 space-y-12">
         <ChapterHeader index="02" label="SKILLS" eyebrow="TECHNICAL SKILLS" badge="02 / 06" tone="cool" />
 
         <div className="border-t" style={{ borderColor: 'var(--t-hairline)' }}>
@@ -34,18 +34,15 @@ export const Capabilities = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.04 * idx }}
-              className="group relative grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-center px-4 py-8 md:py-10 border-b transition-colors duration-300 hover:bg-[var(--t-bg-panel)]"
+              className="group relative grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 items-center px-4 py-8 md:py-10 border-b card card-hover transition-colors duration-300"
               style={{ borderColor: 'var(--t-hairline)' }}
             >
               {/* Hover aura edge */}
               <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none border-y"
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none border-y rounded-2xl"
                 style={{ borderColor: 'var(--t-accent-cool)', boxShadow: '0 0 40px var(--t-aura-blue)' }}
               />
 
-              {/* Charge bar — an overlay, so it adds no layout height.
-                  Decorative only: it deliberately carries no proficiency value,
-                  which would imply a metric that was never provided. */}
               <div className="absolute bottom-0 left-4 right-4 h-px overflow-hidden pointer-events-none">
                 <motion.div
                   className="h-full origin-left"
@@ -62,18 +59,18 @@ export const Capabilities = () => {
                   {cat.code}
                 </span>
                 <h3
-                  className="font-display text-3xl md:text-4xl uppercase leading-none"
+                  className="font-display text-3xl md:text-4xl uppercase leading-none group-hover:text-[var(--t-accent-main)] transition-colors"
                   style={{ color: 'var(--t-text-primary)' }}
                 >
                   {cat.title}
                 </h3>
               </div>
 
-              <StaggerGroup className="md:col-span-8 flex flex-wrap items-center gap-2 relative z-10" stagger={0.045}>
+              <StaggerGroup className="md:col-span-8 flex flex-wrap items-center gap-2.5 relative z-10" stagger={0.045}>
                 {cat.skills.map((skill) => (
                   <StaggerItem
                     key={skill}
-                    className="px-3.5 py-1.5 rounded-full border font-body text-sm font-medium transition-colors duration-200 group-hover:border-[var(--t-accent-cool)]"
+                    className="px-3 py-1 rounded-full border font-body text-sm font-medium transition-all duration-200 group-hover:border-[var(--t-accent-cool)] group-hover:text-[var(--t-accent-cool)] group-hover:bg-[rgba(91,91,240,0.05)]"
                     style={{
                       borderColor: 'var(--t-hairline)',
                       backgroundColor: 'var(--t-card-bg)',

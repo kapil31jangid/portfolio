@@ -1,24 +1,34 @@
 import { PORTFOLIO_DATA } from '../../data/portfolio';
 import { ChapterHeader } from '../ui/ChapterHeader';
-import { AssembleHeading, Reveal, StaggerGroup, StaggerItem } from '../ui/motion';
+import { AssembleHeading, Reveal, StaggerGroup, StaggerItem, ScrollVelocity, Marquee } from '../ui/motion';
 
 export const About = () => {
   return (
     <section
       id="about"
-      className="relative py-24 md:py-36 border-b overflow-hidden select-none transition-colors duration-500"
+      className="relative py-16 md:py-24 border-b overflow-hidden select-none transition-colors duration-500 glow-accent"
       style={{
         backgroundColor: 'var(--t-bg-primary)',
         color: 'var(--t-text-primary)',
         borderColor: 'var(--t-hairline)',
       }}
     >
-      <div className="shell relative z-10 space-y-16">
+      <div className="shell relative z-10 space-y-12">
         <ChapterHeader index="01" label="ORIGIN" eyebrow="ABOUT ME" badge="01 / 06" />
 
+        {/* Focus ticker */}
+        <Marquee
+          items={PORTFOLIO_DATA.currentFocus}
+          speed={45}
+          gap={110}
+          theme="cool"
+          className="py-3 border-y mb-8"
+          style={{ borderColor: 'var(--t-hairline)', backgroundColor: 'var(--t-bg-secondary)' }}
+        />
+
         {/* Editorial statement */}
-        <div className="max-w-5xl space-y-10">
-          <Reveal direction="up" duration={0.6} className="space-y-4">
+        <ScrollVelocity intensity={0.35} className="max-w-5xl space-y-12">
+          <Reveal direction="up" duration={0.6} className="space-y-6">
             <span
               className="font-code text-xs font-bold uppercase tracking-widest block"
               style={{ color: 'var(--t-accent-ink)' }}
@@ -45,14 +55,14 @@ export const About = () => {
               {PORTFOLIO_DATA.personal.summary}
             </p>
           </Reveal>
-        </div>
+        </ScrollVelocity>
 
         {/* Focus pillars */}
         <Reveal
           direction="up"
           delay={0.25}
           duration={0.6}
-          className="pt-10 border-t grid grid-cols-1 md:grid-cols-12 gap-10 items-start"
+          className="pt-8 border-t grid grid-cols-1 md:grid-cols-12 gap-6 items-start"
           style={{ borderColor: 'var(--t-hairline)' }}
         >
           <div className="md:col-span-7 space-y-4">
@@ -62,7 +72,7 @@ export const About = () => {
             >
               ACTIVE TRAINING FOCUS
             </span>
-            <StaggerGroup className="flex flex-wrap gap-2.5" stagger={0.06}>
+            <StaggerGroup className="flex flex-wrap gap-3" stagger={0.06}>
               {PORTFOLIO_DATA.currentFocus.map((item) => (
                 <StaggerItem
                   key={item}
@@ -75,7 +85,7 @@ export const About = () => {
           </div>
 
           <div
-            className="md:col-span-5 space-y-4 border-l-0 md:border-l pl-0 md:pl-10"
+            className="md:col-span-5 space-y-4 border-l-0 md:border-l pl-0 md:pl-8"
             style={{ borderColor: 'var(--t-hairline)' }}
           >
             <span
@@ -84,27 +94,33 @@ export const About = () => {
             >
               ACADEMIC ACADEMIES
             </span>
-            <StaggerGroup className="space-y-2.5" stagger={0.09} delay={0.12}>
+            <StaggerGroup className="space-y-2" stagger={0.09} delay={0.12}>
               <StaggerItem
-                className="card card-invert flex justify-between items-center gap-4 px-4 py-3.5"
+                className="card card-invert flex justify-between items-center gap-3 px-4 py-3"
               >
-                <span className="font-body text-sm font-semibold">SILVER OAK UNIVERSITY</span>
+                <div>
+                  <span className="font-body text-sm font-semibold">SILVER OAK UNIVERSITY</span>
+                  <p className="font-code text-[10px] text-[var(--t-text-muted)]">B.Tech Computer Science & Engineering</p>
+                </div>
                 <span
-                  className="font-code text-[11px] font-bold px-2.5 py-1 rounded-full shrink-0"
+                  className="font-code text-[11px] font-bold px-3 py-1.5 rounded-full shrink-0"
                   style={{ backgroundColor: 'var(--t-accent-main)', color: '#FFFFFF' }}
                 >
-                  B.TECH (8.83)
+                  CGPA 8.83
                 </span>
               </StaggerItem>
               <StaggerItem
-                className="card card-invert flex justify-between items-center gap-4 px-4 py-3.5"
+                className="card card-invert flex justify-between items-center gap-3 px-4 py-3"
               >
-                <span className="font-body text-sm font-semibold">IIT MADRAS</span>
+                <div>
+                  <span className="font-body text-sm font-semibold">IIT MADRAS</span>
+                  <p className="font-code text-[10px] text-[var(--t-text-muted)]">BS Data Science & Applications</p>
+                </div>
                 <span
-                  className="font-code text-[11px] font-bold px-2.5 py-1 rounded-full shrink-0"
+                  className="font-code text-[11px] font-bold px-3 py-1.5 rounded-full shrink-0"
                   style={{ backgroundColor: 'var(--t-accent-cool)', color: '#FFFFFF' }}
                 >
-                  BS DATA SCIENCE
+                  Remote
                 </span>
               </StaggerItem>
             </StaggerGroup>

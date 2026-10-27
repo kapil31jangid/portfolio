@@ -3,7 +3,7 @@ import { GithubIcon, LinkedinIcon } from '../ui/Icons';
 import { Mail, MapPin, FileText, ArrowUpRight } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ChapterHeader } from '../ui/ChapterHeader';
-import { AssembleHeading, Magnetic, Reveal } from '../ui/motion';
+import { AssembleHeading, Magnetic, Reveal, ClickBurst } from '../ui/motion';
 
 export const Contact = () => {
   const p = PORTFOLIO_DATA.personal;
@@ -12,13 +12,13 @@ export const Contact = () => {
   return (
     <section
       id="contact"
-      className="relative pt-24 pb-12 border-t overflow-hidden select-none"
+      className="relative pt-16 pb-8 border-t overflow-hidden select-none"
       style={{ borderColor: 'var(--t-hairline)', backgroundColor: 'var(--t-bg-primary)' }}
     >
-      <div className="shell relative z-10 space-y-20">
+      <div className="shell relative z-10 space-y-12">
         <ChapterHeader index="06" label="NEXT ADVENTURE" eyebrow="GET IN TOUCH" badge="06 / 06" />
 
-        <div className="max-w-5xl space-y-12">
+        <div className="max-w-5xl space-y-8">
           <Reveal direction="up" distance={1.25} duration={0.7} className="space-y-4">
             <span
               className="font-code text-xs font-bold uppercase tracking-widest block"
@@ -56,15 +56,17 @@ export const Contact = () => {
                 />
               )}
 
-              <Magnetic strength={0.18}>
-                <a
-                  href={`mailto:${p.email}`}
-                  className="contact-email btn btn-primary text-base md:text-lg px-7 py-4"
-                >
-                  <Mail className="w-5 h-5" />
-                  <span>{p.email}</span>
-                </a>
-              </Magnetic>
+              <ClickBurst theme="accent" maxRadius={220} rings={5} particleCount={20}>
+                <Magnetic strength={0.18}>
+                  <a
+                    href={`mailto:${p.email}`}
+                    className="contact-email btn btn-primary text-base md:text-lg px-7 py-4"
+                  >
+                    <Mail className="w-5 h-5" />
+                    <span>{p.email}</span>
+                  </a>
+                </Magnetic>
+              </ClickBurst>
             </div>
           </Reveal>
 
@@ -73,10 +75,10 @@ export const Contact = () => {
             direction="up"
             duration={0.6}
             delay={0.25}
-            className="flex flex-wrap items-center gap-6 pt-4"
+            className="flex flex-wrap items-center gap-4 pt-2"
           >
             <span
-              className="inline-flex items-center gap-2 font-code text-[11px] font-bold uppercase tracking-widest px-3.5 py-2 rounded-full border"
+              className="inline-flex items-center gap-2 font-code text-[11px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border"
               style={{ borderColor: 'var(--t-hairline)', color: 'var(--t-text-secondary)' }}
             >
               <MapPin className="w-3.5 h-3.5" style={{ color: 'var(--t-accent-main)' }} />
@@ -121,7 +123,7 @@ export const Contact = () => {
 
         {/* Footer */}
         <div
-          className="pt-8 border-t flex flex-col sm:flex-row items-center justify-between gap-3 font-code text-[11px] font-bold uppercase tracking-widest"
+          className="pt-6 border-t flex flex-col sm:flex-row items-center justify-between gap-3 font-code text-[11px] font-bold uppercase tracking-widest"
           style={{ borderColor: 'var(--t-hairline)', color: 'var(--t-text-muted)' }}
         >
           <div style={{ color: 'var(--t-text-primary)' }}>KAPIL JANGID</div>

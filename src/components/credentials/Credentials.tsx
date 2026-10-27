@@ -1,7 +1,8 @@
 import { PORTFOLIO_DATA } from '../../data/portfolio';
 import { ArrowUpRight } from 'lucide-react';
 import { ChapterHeader } from '../ui/ChapterHeader';
-import { CountUp, Reveal } from '../ui/motion';
+import { CountUp, Reveal, Marquee } from '../ui/motion';
+import { motion } from 'framer-motion';
 
 /**
  * A short mark for the issuer, so each card carries a block of colour the way
@@ -23,15 +24,25 @@ export const Credentials = () => {
   return (
     <section
       id="credentials"
-      className="relative py-24 md:py-36 border-b overflow-hidden select-none transition-colors duration-500"
+      className="relative py-16 md:py-24 border-b overflow-hidden select-none transition-colors duration-500"
       style={{
         backgroundColor: 'var(--t-bg-secondary)',
         color: 'var(--t-text-primary)',
         borderColor: 'var(--t-hairline)',
       }}
     >
-      <div className="shell relative z-10 space-y-16">
+      <div className="shell relative z-10 space-y-10">
         <ChapterHeader index="05" label="ACHIEVEMENTS" eyebrow="CERTIFICATIONS" badge="05 / 06" />
+
+        {/* Cert marquee */}
+        <Marquee
+          items={PORTFOLIO_DATA.certifications.map(c => c.title)}
+          speed={40}
+          gap={120}
+          theme="accent"
+          className="py-2 border-y mb-6"
+          style={{ borderColor: 'var(--t-hairline)', backgroundColor: 'var(--t-bg-secondary)' }}
+        />
 
         <div className="space-y-6">
           {/* Sub-heading with the running count, mirroring the reference's
@@ -51,9 +62,9 @@ export const Credentials = () => {
             </span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {certifications.map((cert, idx) => {
-              const cardClass = `card shine group relative overflow-hidden flex flex-col h-full p-5${
+              const cardClass = `card shine group relative overflow-hidden flex flex-col h-full p-4${
                 cert.url ? ' cursor-pointer hover:border-[var(--t-accent-main)] hover:-translate-y-0.5' : ''
               }`;
 
@@ -84,7 +95,7 @@ export const Credentials = () => {
                   </h4>
 
                   <p
-                    className="font-body text-sm leading-snug mb-5"
+                    className="font-body text-sm leading-snug mb-3"
                     style={{ color: 'var(--t-text-secondary)' }}
                   >
                     {cert.issuer}
@@ -93,7 +104,7 @@ export const Credentials = () => {
                   {/* Meta pinned to the bottom so the rows line up across
                       cards with different title lengths. */}
                   <div
-                    className="mt-auto pt-4 border-t flex items-center justify-between gap-3"
+                    className="mt-auto pt-3 border-t flex items-center justify-between gap-3"
                     style={{ borderColor: 'var(--t-hairline)' }}
                   >
                     <span
@@ -127,13 +138,19 @@ export const Credentials = () => {
                   delay={0.04 * idx}
                   className="h-full"
                 >
-                  {cert.url ? (
-                    <a href={cert.url} target="_blank" rel="noopener noreferrer" className={cardClass}>
-                      {body}
-                    </a>
-                  ) : (
-                    <div className={cardClass}>{body}</div>
-                  )}
+                  <motion.div
+                    whileInView={{ y: [0, -12, 0] }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 0.05 * idx }}
+                  >
+                    {cert.url ? (
+                      <a href={cert.url} target="_blank" rel="noopener noreferrer" className={cardClass}>
+                        {body}
+                      </a>
+                    ) : (
+                      <div className={cardClass}>{body}</div>
+                    )}
+                  </motion.div>
                 </Reveal>
               );
             })}

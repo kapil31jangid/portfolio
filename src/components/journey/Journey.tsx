@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { PORTFOLIO_DATA } from '../../data/portfolio';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { ChapterHeader } from '../ui/ChapterHeader';
-import { OrbitRing, Reveal, StaggerGroup, StaggerItem } from '../ui/motion';
+import { OrbitRing, Reveal, StaggerGroup, StaggerItem, ScrollVelocity } from '../ui/motion';
 import { Award, GraduationCap, Users } from 'lucide-react';
 
 /** Where the rail line sits, and therefore where the markers centre on it. */
@@ -54,17 +54,17 @@ export const Journey = () => {
   return (
     <section
       id="journey"
-      className="relative py-28 md:py-40 border-b select-none transition-colors duration-500"
+      className="relative py-16 md:py-24 border-b select-none transition-colors duration-500"
       style={{
         backgroundColor: 'var(--t-bg-primary)',
         color: 'var(--t-text-primary)',
         borderColor: 'var(--t-hairline)',
       }}
     >
-      <div className="shell relative z-10 space-y-20">
+      <div className="shell relative z-10 space-y-12">
         <ChapterHeader index="04" label="JOURNEY" eyebrow="EXPERIENCE & EDUCATION" badge="04 / 06" />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
           {/* ── STICKY RAIL ──
               Holds its position while the timeline scrolls past, so the
               section reads as a running log rather than a list. Purely
@@ -125,7 +125,7 @@ export const Journey = () => {
               )}
             </div>
 
-            <div className="space-y-8 md:space-y-10">
+            <ScrollVelocity intensity={0.25} className="space-y-6 md:space-y-8">
               {milestones.map((m, idx) => {
                 const Icon = m.icon;
                 return (
@@ -153,7 +153,7 @@ export const Journey = () => {
                       0{idx + 1}
                     </motion.div>
 
-                    <div className="card p-6 md:p-7 space-y-3">
+                    <div className="card p-4 md:p-5 space-y-3 group-hover:border-[var(--t-accent-main)] transition-border duration-300">
                       <div className="flex flex-wrap items-center justify-between gap-3">
                         <div className="flex items-center gap-3">
                           <span
@@ -195,7 +195,7 @@ export const Journey = () => {
                   </Reveal>
                 );
               })}
-            </div>
+            </ScrollVelocity>
           </div>
         </div>
 

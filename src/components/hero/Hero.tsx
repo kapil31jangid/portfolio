@@ -28,7 +28,7 @@ export const Hero = () => {
     <section
       id="hero"
       ref={heroRef}
-      className="bg-dots relative min-h-screen flex flex-col justify-center overflow-hidden select-none pt-28 pb-20 transition-colors duration-500"
+          className="bg-dots relative min-h-screen flex flex-col justify-center overflow-hidden select-none pt-20 pb-12 transition-colors duration-500"
       style={{ backgroundColor: 'var(--t-bg-primary)', color: 'var(--t-text-primary)' }}
     >
       <div className="shell relative z-10">
@@ -43,14 +43,14 @@ export const Hero = () => {
           >
             <ThemeToggle />
             <span
-              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full border font-code text-[11px] font-bold uppercase tracking-widest"
+                        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border font-code text-[11px] font-bold uppercase tracking-widest"
               style={{ borderColor: 'var(--t-hairline)', color: 'var(--t-text-secondary)' }}
             >
               <MapPin className="w-3.5 h-3.5" style={{ color: 'var(--t-accent-main)' }} />
               {p.location}
             </span>
             <span
-              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full border font-code text-[11px] font-bold uppercase tracking-widest"
+                        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border font-code text-[11px] font-bold uppercase tracking-widest"
               style={{ borderColor: 'var(--t-hairline)', color: 'var(--t-text-secondary)' }}
             >
               <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--t-accent-main)' }} />
@@ -59,7 +59,7 @@ export const Hero = () => {
           </motion.div>
 
           {/* ── WORDMARK ── */}
-          <div className="relative w-full mt-12 sm:mt-16">
+          <div className="relative w-full mt-8 sm:mt-12">
             {/* The orbit ring reads as the mark's halo. Sized off the viewport
                 so it stays an ellipse rather than collapsing on narrow screens. */}
             <motion.div
@@ -122,7 +122,7 @@ export const Hero = () => {
 
           {/* ── ROLE LINE ── */}
           <p
-            className="font-code text-sm sm:text-base md:text-lg font-bold uppercase tracking-[0.22em] mt-10"
+                      className="font-code text-sm sm:text-base md:text-lg font-bold uppercase tracking-[0.22em] mt-6"
             style={{ color: 'var(--t-text-secondary)' }}
           >
             <Typewriter text="AI-DRIVEN FULL STACK DEVELOPER" trigger="mount" startDelay={700} speed={38} />
@@ -132,7 +132,7 @@ export const Hero = () => {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 1.5 }}
-            className="font-body text-lg md:text-xl font-medium max-w-xl leading-relaxed mt-6"
+                      className="font-body text-lg md:text-xl font-medium max-w-xl leading-relaxed mt-4"
             style={{ color: 'var(--t-text-secondary)' }}
           >
             I build intelligent products across AI, backend systems and the web.
@@ -143,7 +143,7 @@ export const Hero = () => {
             initial={{ opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 1.65 }}
-            className="flex flex-wrap items-center justify-center gap-4 mt-10"
+                      className="flex flex-wrap items-center justify-center gap-4 mt-6"
           >
             <Magnetic>
               <a href="#work" className="btn btn-primary group">

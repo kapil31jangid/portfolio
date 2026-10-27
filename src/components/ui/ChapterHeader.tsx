@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { SectionMark } from './SectionMark';
+import { SoundEffect } from './motion/SoundEffect';
 
 export interface ChapterHeaderProps {
   /** Two-digit chapter number, e.g. `01`. */
@@ -14,14 +15,20 @@ export interface ChapterHeaderProps {
   tone?: 'accent' | 'cool';
 }
 
-/**
- * The chapter opener used by every section. Was six near-identical copies that
- * differed only in their label, index and emblem.
- *
- * The heading's `NN / NAME` string and the eyebrow text are passed in whole
- * rather than composed from parts, because both are content: they read the same
- * as they did before the restyle.
- */
+const SOUNDS: Record<string, string> = {
+  '01': 'ORIGIN',
+  '02': 'POWERS',
+  '03': 'MISSIONS',
+  '04': 'EXPERIENCE',
+  '05': 'CREDENTIALS',
+  '06': 'CONTACT',
+};
+
+const TONE_COLOR: Record<string, 'red' | 'blue' | 'yellow'> = {
+  accent: 'red',
+  cool: 'blue',
+};
+
 export function ChapterHeader({
   index,
   label,
@@ -31,41 +38,44 @@ export function ChapterHeader({
 }: ChapterHeaderProps) {
   const prefersReduced = useReducedMotion();
   const ink = tone === 'cool' ? 'var(--t-cool-ink)' : 'var(--t-accent-ink)';
+  const sfxText = SOUNDS[index] ?? label;
+  const sfxColor = TONE_COLOR[tone];
 
   return (
-    <header className="relative pb-6">
-      <div className="flex flex-wrap items-center justify-between gap-4 sm:gap-6">
-        <div className="flex items-center gap-4 sm:gap-6 min-w-0">
-          <SectionMark index={index} />
-          <div className="min-w-0">
-            <span
-              className="font-code text-xs font-bold uppercase tracking-widest block"
-              style={{ color: ink }}
-            >
-              [ {eyebrow} ]
-            </span>
-            <h2
-              className="font-display text-5xl md:text-7xl uppercase leading-none mt-1.5"
-              style={{ color: 'var(--t-heading)' }}
-            >
-              {index} / {label}
-            </h2>
+    <header className="relative pb-6 comic-panel comic-panel-hover">
+      <div className="relative z-2">
+        <SoundEffect text={sfxText} className="absolute -top-6 -left-2" color="red" />
+        <div className="flex flex-wrap items-center justify-between gap-4 sm:gap-6">
+          <div className="flex items-center gap-4 sm:gap-6 min-w-0">
+            <SectionMark index={index} />
+            <div className="min-w-0">
+              <span
+                className="font-code text-xs font-bold uppercase tracking-widest block"
+                style={{ color: ink }}
+              >
+                <SoundEffect text={`[ ${eyebrow} ]`} color={sfxColor} />
+              </span>
+              <h2
+                className="font-display text-3xl md:text-5xl uppercase leading-none mt-1"
+                style={{ color: 'var(--t-heading)' }}
+              >
+                <SoundEffect text={`${index} / ${label}`} color={sfxColor} />
+              </h2>
+            </div>
           </div>
-        </div>
 
-        <span
-          className="hidden sm:inline-flex items-center px-3.5 py-1.5 rounded-full border font-code text-[11px] font-bold uppercase tracking-widest"
-          style={{ borderColor: 'var(--t-hairline)', color: 'var(--t-text-secondary)' }}
-        >
-          {badge}
-        </span>
+          <span
+            className="hidden sm:inline-flex items-center px-3.5 py-1.5 rounded-full border font-code text-[11px] font-bold uppercase tracking-widest"
+            style={{ borderColor: 'var(--t-hairline)', color: 'var(--t-text-secondary)' }}
+          >
+            {badge}
+          </span>
+        </div>
       </div>
 
-      {/* The hairline draws outward from the left as the header arrives (ref #10).
-          Under reduced motion it starts already drawn, so nothing is left
-          collapsed at `scaleX(0)` for a reader who never animates. */}
+      {/* Comic border drop-shadow is on .comic-panel */}
       <motion.div
-        className="rule absolute bottom-0 left-0 right-0"
+        className="rule absolute bottom-0 left-0 right-0 z-2"
         initial={{ scaleX: prefersReduced ? 1 : 0 }}
         whileInView={{ scaleX: 1 }}
         viewport={{ once: true, margin: '-80px' }}

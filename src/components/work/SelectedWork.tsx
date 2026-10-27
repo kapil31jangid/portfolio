@@ -1,214 +1,114 @@
 import { PORTFOLIO_DATA } from '../../data/portfolio';
 import { StocklyticsVisual } from '../projects/StocklyticsVisual';
 import { VendorBridgeVisual } from '../projects/VendorBridgeVisual';
-import { motion } from 'framer-motion';
 import { ChapterHeader } from '../ui/ChapterHeader';
-import { Reveal, StaggerGroup, StaggerItem, TiltCard } from '../ui/motion';
+import { Reveal, TiltCard, Magnetic, ClickBurst } from '../ui/motion';
+import { ExternalLink } from 'lucide-react';
+import { GithubIcon } from '../ui/Icons';
+import { motion } from 'framer-motion';
+import { SoundEffect } from '../ui/motion/SoundEffect';
 
 export const SelectedWork = () => {
   const stocklytics = PORTFOLIO_DATA.projects.find((p) => p.id === 'stocklytics-ai')!;
   const vendorbridge = PORTFOLIO_DATA.projects.find((p) => p.id === 'vendorbridge')!;
+  const projects = [stocklytics, vendorbridge];
 
   return (
-    <section
-      id="work"
-      className="relative overflow-hidden select-none py-24 md:py-36 border-b"
-      style={{ backgroundColor: 'var(--t-bg-primary)', borderColor: 'var(--t-hairline)' }}
-    >
-      <div className="shell space-y-20 md:space-y-28">
+    <section id="work" className="relative overflow-hidden select-none py-16 md:py-24 border-b" style={{ backgroundColor: 'var(--t-bg-primary)', borderColor: 'var(--t-hairline)' }}>
+      <div className="shell space-y-16 md:space-y-20">
         <ChapterHeader index="03" label="PROJECTS" eyebrow="SELECTED WORK" badge="03 / 06" />
-
-        {/* ──── PROJECT 01 — STOCKLYTICS AI ──── */}
-        <article className="space-y-12">
-          <div
-            className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end pb-8 border-b"
-            style={{ borderColor: 'var(--t-hairline)' }}
-          >
-            <Reveal direction="up" duration={0.6} className="lg:col-span-8 space-y-3">
-              <div className="flex flex-wrap items-center gap-3">
-                <span
-                  className="px-3 py-1 rounded-full font-code text-[11px] font-bold uppercase tracking-widest"
-                  style={{ backgroundColor: 'var(--t-accent-main)', color: '#FFFFFF' }}
-                >
-                  BATTLE ARC I
-                </span>
-                <span
-                  className="font-code text-[11px] font-bold uppercase tracking-widest"
-                  style={{ color: 'var(--t-text-muted)' }}
-                >
-                  // RETAIL INTELLIGENCE & POS PLATFORM
-                </span>
-              </div>
-
-              <h3 className="font-display text-5xl sm:text-7xl uppercase leading-none" style={{ color: 'var(--t-heading)' }}>
-                {stocklytics.title}
-              </h3>
-
-              <p className="font-body text-lg font-semibold" style={{ color: 'var(--t-accent-ink)' }}>
-                {stocklytics.subtitle}
-              </p>
-            </Reveal>
-
-            <StaggerGroup className="lg:col-span-4 flex flex-wrap gap-2 lg:justify-end" stagger={0.07}>
-              {stocklytics.technologies.map((tech) => (
-                <StaggerItem
-                  key={tech}
-                  className="px-3.5 py-1.5 rounded-full border font-code text-[11px] font-bold uppercase tracking-wide"
-                  style={{ borderColor: 'var(--t-hairline)', color: 'var(--t-text-secondary)' }}
-                >
-                  {tech}
-                </StaggerItem>
-              ))}
-            </StaggerGroup>
-          </div>
-
-          {/* Interactive retail dashboard mockup */}
-          <Reveal duration={0.7} distance={1.4}>
-            <TiltCard intensity={4}>
-              <StocklyticsVisual />
-            </TiltCard>
-          </Reveal>
-
-          <Reveal direction="up" duration={0.6} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="card p-6 space-y-4">
-              <h4
-                className="font-display text-xl uppercase pb-3 border-b"
-                style={{ color: 'var(--t-heading)', borderColor: 'var(--t-hairline)' }}
-              >
-                MISSION BRIEFING & ARCHITECTURE
-              </h4>
-              {stocklytics.description.map((desc, i) => (
-                <p key={i} className="font-body text-base leading-relaxed" style={{ color: 'var(--t-text-secondary)' }}>
-                  {desc}
-                </p>
-              ))}
-            </div>
-
-            <div className="card p-6 space-y-4">
-              <h4
-                className="font-display text-xl uppercase pb-3 border-b"
-                style={{ color: 'var(--t-heading)', borderColor: 'var(--t-hairline)' }}
-              >
-                CORE CAPABILITIES & CALLOUTS
-              </h4>
-              <StaggerGroup className="flex flex-wrap gap-2 pt-1" stagger={0.055}>
-                {stocklytics.featureLabels?.map((feat) => (
-                  <StaggerItem
-                    key={feat}
-                    className="px-3 py-1.5 rounded-full font-code text-[11px] font-bold"
-                    style={{ backgroundColor: 'var(--t-accent-cool)', color: '#FFFFFF' }}
-                  >
-                    {feat}
-                  </StaggerItem>
-                ))}
-              </StaggerGroup>
-            </div>
-          </Reveal>
-        </article>
-
-        {/* ──── PROJECT 02 — VENDORBRIDGE ──── */}
-        <article className="space-y-12">
-          <div
-            className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end pb-8 border-b"
-            style={{ borderColor: 'var(--t-hairline)' }}
-          >
-            <Reveal direction="up" duration={0.6} className="lg:col-span-8 space-y-3">
-              <div className="flex flex-wrap items-center gap-3">
-                <span
-                  className="px-3 py-1 rounded-full font-code text-[11px] font-bold uppercase tracking-widest"
-                  style={{ backgroundColor: 'var(--t-tag-bg)', color: 'var(--t-tag-text)' }}
-                >
-                  BATTLE ARC II
-                </span>
-                <span
-                  className="font-code text-[11px] font-bold uppercase tracking-widest"
-                  style={{ color: 'var(--t-text-muted)' }}
-                >
-                  // SUPPLY CHAIN AUTOMATION ENGINE
-                </span>
-              </div>
-
-              <h3 className="font-display text-5xl sm:text-7xl uppercase leading-none" style={{ color: 'var(--t-heading)' }}>
-                {vendorbridge.title}
-              </h3>
-
-              <p className="font-body text-lg font-semibold" style={{ color: 'var(--t-accent-ink)' }}>
-                {vendorbridge.subtitle}
-              </p>
-            </Reveal>
-
-            <StaggerGroup className="lg:col-span-4 flex flex-wrap gap-2 lg:justify-end" stagger={0.07}>
-              {vendorbridge.technologies.map((tech) => (
-                <StaggerItem
-                  key={tech}
-                  className="px-3.5 py-1.5 rounded-full border font-code text-[11px] font-bold uppercase tracking-wide"
-                  style={{ borderColor: 'var(--t-hairline)', color: 'var(--t-text-secondary)' }}
-                >
-                  {tech}
-                </StaggerItem>
-              ))}
-            </StaggerGroup>
-          </div>
-
-          {/* Interactive procurement interface mockup */}
-          <Reveal duration={0.7} distance={1.4}>
-            <TiltCard intensity={4}>
-              <VendorBridgeVisual />
-            </TiltCard>
-          </Reveal>
-
-          <Reveal direction="up" duration={0.6} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="card p-6 space-y-4">
-              <h4
-                className="font-display text-xl uppercase pb-3 border-b"
-                style={{ color: 'var(--t-heading)', borderColor: 'var(--t-hairline)' }}
-              >
-                AUTOMATION MISSION ARCHITECTURE
-              </h4>
-              {vendorbridge.description.map((desc, i) => (
-                <p key={i} className="font-body text-base leading-relaxed" style={{ color: 'var(--t-text-secondary)' }}>
-                  {desc}
-                </p>
-              ))}
-            </div>
-
-            <div className="card p-6 space-y-4">
-              <h4
-                className="font-display text-xl uppercase pb-3 border-b"
-                style={{ color: 'var(--t-heading)', borderColor: 'var(--t-hairline)' }}
-              >
-                AUTOMATED WORKFLOW PIPELINE
-              </h4>
-              <div className="space-y-4 pt-1">
-                {/* A slower stagger so the steps read as a sequence, not a set. */}
-                <StaggerGroup className="flex flex-wrap gap-2" stagger={0.11} delay={0.1}>
-                  {vendorbridge.workflow?.map((step) => (
-                    <StaggerItem
-                      key={step}
-                      className="px-3 py-1.5 rounded-full font-code text-[11px] font-bold"
-                      style={{ backgroundColor: 'var(--t-accent-main)', color: '#FFFFFF' }}
-                    >
-                      {step}
-                    </StaggerItem>
+        {projects.map((project) => (
+          <article key={project.id} className="relative space-y-8">
+            <Reveal direction="up" duration={0.6}>
+              <div className="comic-panel comic-panel-hover p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-end" style={{ borderColor: 'var(--t-hairline)' }}>
+                <div className="lg:col-span-8 space-y-4">
+                  <SoundEffect text="MISSION" className="-mt-4 ml-1" color="blue" />
+                  <h3 className="font-display text-4xl sm:text-5xl uppercase leading-[0.9] tracking-tighter group-hover:text-[var(--t-accent-main)] transition-colors duration-300" style={{ color: 'var(--t-heading)', textShadow: '3px 3px 0 #000000' }}>
+                    {project.title}
+                  </h3>
+                  <p className="font-body text-lg md:text-xl font-bold uppercase tracking-widest" style={{ color: 'var(--t-accent-main)', textShadow: '2px 2px 0 #000000' }}>
+                    {project.subtitle}
+                  </p>
+                </div>
+                <div className="lg:col-span-4 flex flex-wrap gap-2 lg:justify-end">
+                  {project.technologies.map((tech) => (
+                    <span key={tech} className="px-3 py-1.5 border-2 border-black bg-white font-code text-[11px] font-bold uppercase tracking-widest group-hover:bg-[#EF3B2D] group-hover:text-white transition-all duration-200" style={{ color: 'var(--t-text-secondary)', boxShadow: '0 3px 0 #000000' }}>
+                      {tech}
+                    </span>
                   ))}
-                </StaggerGroup>
-
-                {/* Progress line that wipes in underneath, so the row reads as a
-                    pipeline advancing rather than a static list. */}
-                <motion.div
-                  className="h-px origin-left"
-                  style={{
-                    background: 'linear-gradient(90deg, var(--t-accent-main), var(--t-accent-cool))',
-                  }}
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  viewport={{ once: true, margin: '-60px' }}
-                  transition={{ duration: 1.2, delay: 0.35, ease: 'easeOut' }}
-                />
+                </div>
               </div>
-            </div>
-          </Reveal>
-        </article>
+            </Reveal>
+
+            <Reveal duration={0.7} distance={1.4}>
+              <TiltCard intensity={4} spotlight={false}>
+                <ClickBurst theme="accent" maxRadius={180} rings={4} particleCount={16} disabled={false}>
+                  <Magnetic strength={0.15}>
+                    <div className="project-visual relative overflow-hidden border-4 border-black p-1 comic-panel-hover" style={{ background: 'var(--t-card-bg)', boxShadow: '0 6px 0 #000000' }}>
+                      {project.id === 'stocklytics-ai' ? <StocklyticsVisual /> : <VendorBridgeVisual />}
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileHover={{ opacity: 1, scale: 1 }}
+                        transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                        className="absolute inset-0 bg-white/90 backdrop-blur-md flex flex-col items-center justify-center gap-4 opacity-0 pointer-events-none group-hover:pointer-events-auto"
+                      >
+                        {project.githubUrl && (
+                          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 border-4 border-black bg-white font-code text-[11px] font-bold uppercase" style={{ color: 'var(--t-text-primary)', boxShadow: '0 4px 0 #000000' }}>
+                            <GithubIcon className="w-3.5 h-3.5" /> VIEW CODE
+                          </a>
+                        )}
+                        {project.liveUrl && (
+                          <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 border-4 border-black bg-white font-code text-[11px] font-bold uppercase" style={{ color: 'var(--t-text-primary)', boxShadow: '0 4px 0 #000000' }}>
+                            <ExternalLink className="w-3.5 h-3.5" /> LIVE DEMO
+                          </a>
+                        )}
+                      </motion.div>
+                    </div>
+                  </Magnetic>
+                </ClickBurst>
+              </TiltCard>
+            </Reveal>
+
+            <Reveal direction="up" duration={0.6} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="card p-4 space-y-3 group-hover:border-[var(--t-accent-main)] transition-border duration-300" style={{ borderColor: 'var(--t-hairline)', boxShadow: '0 4px 0 #000000' }}>
+                <h4 className="font-display text-lg uppercase pb-2 border-b-2 border-black" style={{ color: 'var(--t-heading)', textShadow: '2px 2px 0 #000000' }}>
+                  KEY FEATURES
+                </h4>
+                {project.featureLabels?.map((feature) => (
+                  <motion.p
+                    key={feature}
+                    initial={{ opacity: 0, x: -10 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: '-40px' }}
+                    transition={{ duration: 0.4 }}
+                    className="font-body text-sm leading-relaxed group-hover:text-[var(--t-accent-main)] transition-colors"
+                    style={{ color: 'var(--t-text-secondary)' }}
+                  >
+                    {feature}
+                  </motion.p>
+                ))}
+              </div>
+              <div className="card p-4 space-y-3 group-hover:border-[var(--t-accent-main)] transition-border duration-300" style={{ borderColor: 'var(--t-hairline)', boxShadow: '0 4px 0 #000000' }}>
+                <h4 className="font-display text-lg uppercase pb-2 border-b-2 border-black" style={{ color: 'var(--t-heading)', textShadow: '2px 2px 0 #000000' }}>
+                  ARCHITECTURE
+                </h4>
+                {project.description.map((desc) => (
+                  <motion.p
+                    key={desc}
+                    initial={{ opacity: 0, x: -10 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: '-40px' }}
+                    transition={{ duration: 0.4, delay: 0.1 }}
+                    className="font-body text-sm leading-relaxed group-hover:text-[var(--t-accent-main)] transition-colors"
+                    style={{ color: 'var(--t-text-secondary)' }}
+                  >
+                    {desc}
+                  </motion.p>
+                ))}
+              </div>
+            </Reveal>
+          </article>
+        ))}
       </div>
     </section>
   );

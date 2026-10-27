@@ -36,3 +36,4 @@ reference/
 *.njsproj
 *.sln
 *.sw?
+.venv/*
